@@ -1,0 +1,86 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Form, Button, Container } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import axiosInstance from './axiosInstance';
+
+const UserInfo = () => {
+    const { user_id } = useParams();
+    const [Userdata, setUserdata] = useState({ });
+
+    useEffect(() => {
+        const getDetails = async () => {
+            try {
+                const response = await axiosInstance.get(`/users/${user_id}`);
+                setUserdata(response.data);
+            } catch (error) {
+                console.error("Error fetching user details", error);
+            }
+        };
+
+        getDetails();
+    }, [user_id]);
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setUserdata(prevState => ({
+            ...prevState,
+            [id]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put(`http://localhost:8081/api/users/${user_id}`, Userdata);
+            alert("Changes Saved");
+        } catch (error) {
+            console.error("Error updating user details", error);
+        }
+    };
+
+    return (
+        <Container className='mt-3 w-50'>
+            <h1 className='text-center'>Account Details</h1>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="name">
+                    <Form.Label>UserName</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={Userdata.name}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="email">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                        type="email"
+                        value={Userdata.email}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="address">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={Userdata.address}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="phone">
+                    <Form.Label>Phone Number</Form.Label>
+                    <Form.Control
+                        type="number"
+                        value={Userdata.phone}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Button variant="warning" type="submit">
+                    Save Changes
+                </Button>
+            </Form>
+        </Container>
+    );
+};
+
+export default UserInfo;

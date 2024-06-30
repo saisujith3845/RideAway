@@ -1,0 +1,136 @@
+[{
+  "_id": {
+    "$oid": "665c8271d7830a60dcfd4539"
+  },
+  "make": "Ford",
+  "model": "Mustang",
+  "year": 2015,
+  "type": "car",
+  "color": "black",
+  "fuelType": "petrol",
+  "rentPerHrs": 300,
+  "owner_id": {
+    "$oid": "665c5559f275d5def06f2945"
+  },
+  "availability": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665c829dd7830a60dcfd453e"
+  },
+  "make": "Lamborghini",
+  "model": "Urus",
+  "year": 2011,
+  "type": "car",
+  "color": "blue",
+  "fuelType": "diesel",
+  "rentPerHrs": 500,
+  "owner_id": {
+    "$oid": "665c5559f275d5def06f2945"
+  },
+  "availability": false,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665c834fd7830a60dcfd4545"
+  },
+  "make": "Ferrari",
+  "model": "488",
+  "year": 2019,
+  "type": "car",
+  "color": "red",
+  "fuelType": "petrol",
+  "rentPerHrs": 700,
+  "owner_id": {
+    "$oid": "665c5559f275d5def06f2945"
+  },
+  "availability": false,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665c839ad7830a60dcfd454e"
+  },
+  "make": "Porsche",
+  "model": "Cayenne",
+  "year": 2015,
+  "type": "car",
+  "color": "white",
+  "fuelType": "diesel",
+  "rentPerHrs": 450,
+  "owner_id": {
+    "$oid": "665c5559f275d5def06f2945"
+  },
+  "availability": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665c83b1d7830a60dcfd4553"
+  },
+  "make": "Audi",
+  "model": "Q7",
+  "year": 2018,
+  "type": "car",
+  "color": "grey",
+  "fuelType": "diesel",
+  "rentPerHrs": 400,
+  "owner_id": {
+    "$oid": "665c5559f275d5def06f2945"
+  },
+  "availability": false,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665c83bcd7830a60dcfd4556"
+  },
+  "make": "BMW",
+  "model": "M4",
+  "year": 2021,
+  "type": "car",
+  "color": "blue",
+  "fuelType": "petrol",
+  "rentPerHrs": 550,
+  "owner_id": {
+    "$oid": "665c5559f275d5def06f2945"
+  },
+  "availability": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665c83cad7830a60dcfd4559"
+  },
+  "make": "Aston Martin",
+  "model": "DB11",
+  "year": 2019,
+  "type": "car",
+  "color": "yellow",
+  "fuelType": "petrol",
+  "rentPerHrs": 750,
+  "owner_id": {
+    "$oid": "665c5559f275d5def06f2945"
+  },
+  "availability": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "665c83d8d7830a60dcfd455c"
+  },
+  "make": "Jaguar",
+  "model": "F-Pace",
+  "year": 2020,
+  "type": "car",
+  "color": "red",
+  "fuelType": "diesel",
+  "rentPerHrs": 480,
+  "owner_id": {
+    "$oid": "665c5559f275d5def06f2945"
+  },
+  "availability": false,
+  "__v": 0
+}]
