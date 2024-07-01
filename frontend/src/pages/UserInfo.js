@@ -6,7 +6,7 @@ import axiosInstance from './axiosInstance';
 
 const UserInfo = () => {
     const { user_id } = useParams();
-    const [Userdata, setUserdata] = useState({ });
+    const [Userdata, setUserdata] = useState({name:"" });
 
     useEffect(() => {
         const getDetails = async () => {
@@ -32,7 +32,7 @@ const UserInfo = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:8081/api/users/${user_id}`, Userdata);
+            await axiosInstance.put(`/users/${user_id}`, Userdata);
             alert("Changes Saved");
         } catch (error) {
             console.error("Error updating user details", error);
@@ -47,7 +47,7 @@ const UserInfo = () => {
                     <Form.Label>UserName</Form.Label>
                     <Form.Control
                         type="text"
-                        value={Userdata.name}
+                        value={Userdata?Userdata.name:""}
                         onChange={handleChange}
                     />
                 </Form.Group>
@@ -55,7 +55,7 @@ const UserInfo = () => {
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
                         type="email"
-                        value={Userdata.email}
+                        value={Userdata?Userdata.email:""}
                         onChange={handleChange}
                     />
                 </Form.Group>
@@ -63,7 +63,7 @@ const UserInfo = () => {
                     <Form.Label>Address</Form.Label>
                     <Form.Control
                         type="text"
-                        value={Userdata.address}
+                        value={Userdata?Userdata.address:""}
                         onChange={handleChange}
                     />
                 </Form.Group>
@@ -71,7 +71,7 @@ const UserInfo = () => {
                     <Form.Label>Phone Number</Form.Label>
                     <Form.Control
                         type="number"
-                        value={Userdata.phone}
+                        value={Userdata?Userdata.phone:""}
                         onChange={handleChange}
                     />
                 </Form.Group>

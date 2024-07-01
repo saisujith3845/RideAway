@@ -6,7 +6,7 @@ import axiosInstance from './axiosInstance';
 import Card from 'react-bootstrap/Card';
 import "bootstrap/dist/css/bootstrap.css";
 import BookingForm from './BookingForm';
-import Header from './Header';
+import NewHeader from './NewHeader';
 
 function VehicleCard({ details }) {
     return (
@@ -48,7 +48,7 @@ const Vehicles = () => {
 
     return (
         <>
-            <Header />
+            <NewHeader />
             <div className='mx-5'>
                 <div className='d-flex flex-wrap justify-content-start'>
                     {availableVehicles.map((vehicle) => (

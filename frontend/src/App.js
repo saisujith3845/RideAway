@@ -19,8 +19,8 @@ function App() {
         <Route path="/vehicles" element={<Vehicles />} />
         <Route path="/vehicles/:vehicle_id" element={<VehicleDetails />} />
         <Route path="/vehicles/:vehicle_id/reviews" element={<VehicleReviews/>} />
-        <Route path="/bookings" element={<Bookings />} />
-        <Route path="/user/:userId" element={<UserInfo />} />
+        <Route path="/user/:user_id/bookings" element={<Bookings />} />
+        <Route path="/user/:user_id" element={<UserInfo />} />
       </Routes>
     </Router>
   );

@@ -5,6 +5,7 @@ import axiosInstance from './axiosInstance'; // Import your configured axios ins
 import Header from './Header';
 
 function BookingsTable() {
+  
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState(null);
 
