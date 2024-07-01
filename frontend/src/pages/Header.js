@@ -6,7 +6,7 @@ function Header() {
   return (
     <Navbar className="bg-warning">
       <Container>
-        <Navbar.Brand className="fs-3 fw-bold" href="">
+        <Navbar.Brand className="fs-3 fw-bold" href="/vehicles">
           Ride Away
         </Navbar.Brand>
         <div className="d-flex justify-content-end">

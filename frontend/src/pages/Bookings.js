@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import "bootstrap/dist/css/bootstrap.min.css";
-import axiosInstance from './axiosInstance'; // Import your configured axios instance
+import axiosInstance from './axiosInstance';
 import Header from './Header';
-
-function BookingsTable() {
+function Bookings() {
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -21,8 +22,13 @@ function BookingsTable() {
     fetchBookings();
   }, []);
 
+  const handleRowClick = (bookingId) => {
+    navigate(`/bookings/${bookingId}`);
+  };
+
   return (
     <>
+    <Header />
       {error && <div>Error: {error}</div>}
       <Table bordered hover>
         <thead>
@@ -39,7 +45,7 @@ function BookingsTable() {
         </thead>
         <tbody>
           {bookings.map((booking, index) => (
-            <tr key={booking._id}>
+            <tr key={booking._id} onClick={() => handleRowClick(booking._id)}>
               <td>{index + 1}</td>
               <td>{`${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year})`}</td>
               <td>{new Date(booking.start_date).toLocaleDateString()}</td>
@@ -52,15 +58,6 @@ function BookingsTable() {
           ))}
         </tbody>
       </Table>
-    </>
-  );
-}
-
-function Bookings() {
-  return (
-    <>
-      <Header />
-      <BookingsTable />
     </>
   );
 }
