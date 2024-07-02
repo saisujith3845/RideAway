@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { Form, Button, Container, Row, Col, Image, FloatingLabel } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { DataContext } from './DataContext';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { setData, setToken } = useContext(DataContext);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
     const formData = new FormData(event.target);
     const data = {
       email: formData.get('email'),
@@ -18,25 +20,22 @@ export default function Login() {
     try {
       const response = await axios.post('http://localhost:8081/api/auth/login', data);
       console.log(response.data);
-      console.log(response.data.token);
-
+      setData(response.data.data);
+      setToken(response.data.token);
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userData', JSON.stringify(response.data.data));
       navigate('/vehicles');
       console.log('Login Successful');
     } catch (error) {
-      document.getElementById("errorMessage").innerText = error.response.data.error;
-      console.error('There was an error Logging!', error);
+      setErrorMessage(error.response.data.error || 'There was an error logging in!');
+      console.error('There was an error logging in!', error);
     }
-
-
-
-    
   };
 
   return (
     <Container className="d-flex justify-content-center vh-100 align-items-center py-4 bg-light">
       <Row className="justify-content-center">
-        <Col >
+        <Col>
           <main className="form-signin">
             <Form onSubmit={handleSubmit}>
               <div className="text-center mb-4">
@@ -55,7 +54,7 @@ export default function Login() {
               </div>
               <p className="mt-5 mb-3 text-body-secondary text-center">© 2024</p>
             </Form>
-            <p id='errorMessage' className='text-center'></p>
+            {errorMessage && <p className='text-center text-danger'>{errorMessage}</p>}
           </main>
         </Col>
       </Row>
