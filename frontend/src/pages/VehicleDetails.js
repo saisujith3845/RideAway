@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Container, Grid, Card, CardContent, Typography, List, ListItem, ListItemText, Divider, Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { Container, Grid, Card, CardContent, Typography,  Divider, Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import axiosInstance from './axiosInstance';
 import Header from './Header';
 import Rating from '@mui/material/Rating';
@@ -72,22 +72,9 @@ const VehicleDetails = () => {
                 </Typography>
                 <Divider sx={{ my: 2 }} />
                 <Typography variant="subtitle1" align="center" gutterBottom>
-                  Owner Details
+                  Vehicle Details
                 </Typography>
-                <List>
-                  <ListItem>
-                    <ListItemText primary="Name" secondary={vehicleDetails.owner_id.name} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary="Email" secondary={vehicleDetails.owner_id.email} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary="Address" secondary={vehicleDetails.owner_id.address} />
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText primary="Phone" secondary={vehicleDetails.owner_id.phone} />
-                  </ListItem>
-                </List>
+                {/* Additional details specific to the vehicle can be added here */}
               </CardContent>
               <Box sx={{ textAlign: 'center', pb: 2 }}>
                 <Button variant="contained" color="primary" component={Link} to={`/vehicles/${vehicle_id}/reviews`}>

@@ -9,7 +9,7 @@ router.use(express.urlencoded({ extended: true }));
 // Get all vehicles (accessible to authenticated users)
 router.get('/', authenticateJWT,async (req, res) => {
     try {
-        const vehicles = await Vehicle.find().populate('owner_id');
+        const vehicles = await Vehicle.find();
         res.status(200).json(vehicles);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -41,7 +41,7 @@ router.post('/', authenticateJWT, isAdmin, async (req, res) => {
 // Get a specific vehicle (accessible to authenticated users)
 router.get('/:vehicle_id',authenticateJWT, async (req, res) => {
     try {
-        const vehicle = await Vehicle.findById(req.params.vehicle_id).populate('owner_id');
+        const vehicle = await Vehicle.findById(req.params.vehicle_id);
         if (!vehicle) {
             return res.status(404).json({ error: 'Vehicle not found' });
         }
