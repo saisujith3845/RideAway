@@ -98,7 +98,7 @@ const BookingsTable = () => {
               </td>
               <td>{booking.status}</td>
               <td>
-              {booking.status!=='confirmed' && <Button varaint="warning" onClick={()=>confirmBooking(booking._id)} >Confirm</Button>}
+              {booking.status!=='confirmed' && <Button variant="success" className='mx-2' onClick={()=>confirmBooking(booking._id)} >Confirm</Button>}
                 <Button variant="danger" onClick={() => deleteBooking(booking._id)}>
                   Delete
                 </Button>

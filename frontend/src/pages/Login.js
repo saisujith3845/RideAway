@@ -25,6 +25,7 @@ export default function Login() {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userData', JSON.stringify(response.data.data));
       navigate('/vehicles');
+      window.location.reload(true);
       console.log('Login Successful');
     } catch (error) {
       setErrorMessage(error.response.data.error || 'There was an error logging in!');

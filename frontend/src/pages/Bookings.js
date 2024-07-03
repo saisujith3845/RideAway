@@ -4,11 +4,12 @@ import Table from 'react-bootstrap/Table';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axiosInstance from './axiosInstance';
 import Header from './Header';
+import UnAuthorizedPage from './UnAuthorizedPage';
 function Bookings() {
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  const udata=localStorage.getItem('userData');
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -28,6 +29,7 @@ function Bookings() {
 
   return (
     <>
+     {udata?<>
     <Header />
       {error && <div>Error: {error}</div>}
       <Table bordered hover>
@@ -58,6 +60,8 @@ function Bookings() {
           ))}
         </tbody>
       </Table>
+    </>:<UnAuthorizedPage />}
+
     </>
   );
 }
