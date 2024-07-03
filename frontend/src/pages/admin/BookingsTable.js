@@ -47,8 +47,9 @@ const BookingsTable = () => {
       setBookings(bookings.map(booking => 
         booking._id === bookingId ? { ...booking, status: 'Confirmed' } : booking
       ));
-      setError(null); // Clear any previous errors  
+      setError(null); 
       alert(res.data.message)  ;
+      window.location.reload();
     } catch (error) {
       setError('Error confirming booking.');
       alert('Error confirming booking.');
