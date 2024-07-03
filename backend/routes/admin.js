@@ -48,7 +48,6 @@ router.delete('/vehicles/:vehicle_id', async (req, res) => {
 router.get('/bookings', async (req, res) => {
     try {
         const bookings = await Booking.find().populate('user_id','email').populate('vehicle_id');
-        console.log(bookings);
         res.status(200).send(bookings);
     } catch (error) {
         res.status(500).send({ error: error.message });
@@ -85,7 +84,7 @@ router.delete('/reviews/:review_id', async (req, res) => {
 router.post('/bookings/:id/confirm', async (req, res) => {
     try {
       const bookingId = req.params.id;
-      const booking = await Booking.findById(bookingId);
+      const booking = await Booking.findById(bookingId).populate('vehicle_id');
   
       if (!booking) {
         return res.status(404).json({ message: 'Booking not found' });

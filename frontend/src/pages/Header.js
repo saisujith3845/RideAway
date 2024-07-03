@@ -2,14 +2,15 @@ import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import Image from 'react-bootstrap/Image';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AppRegistration, NotificationsRounded } from "@mui/icons-material";
+import Badge from '@mui/material/Badge';
 import { useNavigate, Link } from 'react-router-dom';
 import React, { useContext } from 'react';
 import "bootstrap/dist/css/bootstrap.css";
 import { DataContext } from "./DataContext";
 
-function Header() {
+function Header({notificationsData}) {
   const navigate = useNavigate();
-  const { data,setData,setToken } = useContext(DataContext);
+  const { data,setData,setToken,notifications } = useContext(DataContext);
 
   const handleLogout = () => {
   
@@ -29,7 +30,9 @@ function Header() {
         </Navbar.Brand>
         <Nav className="ms-auto d-flex justify-content-center align-items-center ">
           <Nav.Link as={Link} to="/notifications" className="text-center">
-            <NotificationsRounded fontSize="medium" />
+           {notifications?.length>0 ?<Badge badgeContent={notifications.length} color="success">
+           <NotificationsRounded fontSize="medium" />
+                </Badge>:  <NotificationsRounded fontSize="medium" />} 
             <br />
             <span className="icon-text text-dark">Notifications</span>
           </Nav.Link>

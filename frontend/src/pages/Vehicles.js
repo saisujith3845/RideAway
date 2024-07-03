@@ -7,7 +7,6 @@ import Card from 'react-bootstrap/Card';
 import "bootstrap/dist/css/bootstrap.css";
 import BookingForm from './BookingForm';
 import Header from './Header';
-import { Container, Row, Col, Button } from 'react-bootstrap';
 import UnAuthorizedPage from './UnAuthorizedPage';
 
 function VehicleCard({ details }) {
@@ -32,6 +31,8 @@ function VehicleCard({ details }) {
 
 const Vehicles = () => {
     const [allVehicles, setAllVehicles] = useState([]);
+    const [notifications, setNotifications] = useState([]);
+
     const udata=localStorage.getItem('userData');
 
     useEffect(() => {
@@ -43,16 +44,25 @@ const Vehicles = () => {
                 console.error('Error fetching data:', error);
             }
         }
+        const fetchNotifications = async () => {
+            try {
+              const response = await axiosInstance.get('/notifications');
+              setNotifications(response.data); 
+            } catch (error) {
+              console.error('Error fetching notifications:', error);
+            }
+        }
 
         fetchData();
-    }, [allVehicles]);
+        fetchNotifications();
+    }, [allVehicles,notifications]);
 
     const availableVehicles = allVehicles.filter(vehicle => vehicle.availability);
 
     return (
         <>
            {udata?<>
-            <Header />
+            <Header notificationsData={notifications}/>
             <div className='mx-5'>
                 <div className='d-flex flex-wrap justify-content-start'>
                     {availableVehicles.map((vehicle) => (

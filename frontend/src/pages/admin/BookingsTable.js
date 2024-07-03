@@ -40,16 +40,36 @@ const BookingsTable = () => {
     }
   };
 
+  const postNotification = async (booking) => {
+    const message = `Your booking for ${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year}) from ${new Date(booking.start_date).toLocaleDateString()} to ${new Date(booking.end_date).toLocaleDateString()} has been confirmed by the admin. Thanks for choosing us.`;
+    const notification = {
+      user_id: booking.user_id,
+      vehicle_id: booking.vehicle_id,
+      message 
+    };
+
+    try {
+      await axiosInstance.post('/notifications', notification);
+    } catch (error) {
+      console.error('Error posting notification:', error);
+    }
+  };
 
   const confirmBooking = async (bookingId) => {
     try {
-     const res= await axiosInstance.post(`/admin/bookings/${bookingId}/confirm`);
+      const res = await axiosInstance.post(`/admin/bookings/${bookingId}/confirm`);
+      const updatedBooking = res.data.booking;
+      
       setBookings(bookings.map(booking => 
-        booking._id === bookingId ? { ...booking, status: 'Confirmed' } : booking
+        booking._id === bookingId ? { ...booking, status: 'confirmed' } : booking
       ));
       setError(null); 
-      alert(res.data.message)  ;
-      window.location.reload();
+      alert(res.data.message);
+
+      // Post notification
+      await postNotification(updatedBooking);
+
+      // window.location.reload();
     } catch (error) {
       setError('Error confirming booking.');
       alert('Error confirming booking.');
@@ -94,11 +114,11 @@ const BookingsTable = () => {
               <td>{booking._id}</td>
               <td>{booking.user_id.email}</td>
               <td>
-                {`${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year}),${booking.vehicle_id.fuelType}`}
+                {`${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year}), ${booking.vehicle_id.fuelType}`}
               </td>
               <td>{booking.status}</td>
               <td>
-              {booking.status!=='confirmed' && <Button variant="success" className='mx-2' onClick={()=>confirmBooking(booking._id)} >Confirm</Button>}
+              {booking.status !== 'confirmed' && <Button variant="success" className='mx-2' onClick={() => confirmBooking(booking._id)}>Confirm</Button>}
                 <Button variant="danger" onClick={() => deleteBooking(booking._id)}>
                   Delete
                 </Button>
