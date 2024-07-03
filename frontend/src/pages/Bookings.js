@@ -21,7 +21,7 @@ function Bookings() {
     };
 
     fetchBookings();
-  }, []);
+  }, [bookings]);
 
   const handleRowClick = (bookingId) => {
     navigate(`/bookings/${bookingId}`);

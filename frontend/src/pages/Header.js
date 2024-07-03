@@ -24,7 +24,7 @@ function Header() {
     <Navbar className="bg-warning">
       <Container>
         <Navbar.Brand className="fs-3 fw-bold" href="/vehicles">
-        <Image src="../public/logofinal.png" roundedCircle style={{ width: '50px', height: '50px' ,marginRight:'10px' }} />
+        <Image src="logofinal.png" roundedCircle style={{ width: '50px', height: '50px' ,marginRight:'10px' }} />
           Ride Away
         </Navbar.Brand>
         <Nav className="ms-auto d-flex justify-content-center align-items-center ">

@@ -1,3 +1,4 @@
+import Footer from "../Footer";
 import Header from "./AdminHeader"
 
 const Layout=({children})=>{
@@ -9,6 +10,9 @@ const Layout=({children})=>{
             <div>
                 {children}
             </div>
+            <footer>
+                <Footer />
+            </footer>
         </div>
     )
 }

@@ -45,7 +45,7 @@ const Vehicles = () => {
         }
 
         fetchData();
-    }, []);
+    }, [allVehicles]);
 
     const availableVehicles = allVehicles.filter(vehicle => vehicle.availability);
 
