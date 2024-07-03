@@ -40,6 +40,22 @@ const BookingsTable = () => {
     }
   };
 
+
+  const confirmBooking = async (bookingId) => {
+    try {
+     const res= await axiosInstance.post(`/admin/bookings/${bookingId}/confirm`);
+      setBookings(bookings.map(booking => 
+        booking._id === bookingId ? { ...booking, status: 'Confirmed' } : booking
+      ));
+      setError(null); // Clear any previous errors  
+      alert(res.data.message)  ;
+    } catch (error) {
+      setError('Error confirming booking.');
+      alert('Error confirming booking.');
+      console.error('Error confirming booking:', error);
+    }
+  };
+
   const ErrorPage = ({ message }) => {
     return (
       <Container>
@@ -81,6 +97,7 @@ const BookingsTable = () => {
               </td>
               <td>{booking.status}</td>
               <td>
+              {booking.status!=='confirmed' && <Button varaint="warning" onClick={()=>confirmBooking(booking._id)} >Confirm</Button>}
                 <Button variant="danger" onClick={() => deleteBooking(booking._id)}>
                   Delete
                 </Button>

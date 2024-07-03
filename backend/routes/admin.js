@@ -82,6 +82,26 @@ router.delete('/reviews/:review_id', async (req, res) => {
     }
 });
 
+router.post('/bookings/:id/confirm', async (req, res) => {
+    try {
+      const bookingId = req.params.id;
+      const booking = await Booking.findById(bookingId);
+  
+      if (!booking) {
+        return res.status(404).json({ message: 'Booking not found' });
+      }
+  
+      booking.status = 'confirmed';
+      await booking.save();
+  
+      res.status(200).json({ message: 'Booking confirmed successfully', booking });
+    } catch (error) {
+      console.error('Error confirming booking:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+  
+
 // Add more admin routes as needed
 
 module.exports = router;
