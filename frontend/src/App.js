@@ -15,6 +15,8 @@ import Error from './pages/Error';
 import BookingsTable from './pages/admin/BookingsTable';
 import UsersTable from './pages/admin/UsersTable';
 import Notifications from './pages/Notifications';
+import ReviewsTable from './pages/admin/ReviewsTable';
+
 function App() {
   const storedData = localStorage.getItem('userData');
   const data = storedData ? JSON.parse(storedData) : null;
@@ -23,7 +25,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-       { data?.isAdmin && <Route path="/users" element={<UsersTable />} />}
+       { data?.isAdmin &&  <Route path="/users" element={<UsersTable />} />}
+       {data?.isAdmin && <Route path="/reviews" element={<ReviewsTable />} />}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/vehicles" element={data?.isAdmin ? <GetVehicles /> : <Vehicles />} />
@@ -33,6 +36,7 @@ function App() {
         <Route path="/bookings/:booking_id" element={<BookingDetails />} />
         <Route path="/user/:user_id" element={<UserInfo />} />
         <Route path="/notifications" element={<Notifications />} />
+
         <Route path="*" element={<Error />} /> 
       </Routes>
     </Router>
