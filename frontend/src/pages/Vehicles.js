@@ -7,7 +7,7 @@ import Card from 'react-bootstrap/Card';
 import "bootstrap/dist/css/bootstrap.css";
 import BookingForm from './BookingForm';
 import Header from './Header';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+
 import UnAuthorizedPage from './UnAuthorizedPage';
 
 function VehicleCard({ details }) {

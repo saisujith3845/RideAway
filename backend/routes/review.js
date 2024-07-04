@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Review = require('../models/Review');
-const { authenticateJWT } = require('../middleware/authenticateJWT');
+const { authenticateJWT, isAdmin } = require('../middleware/authenticateJWT');
 
 const router = express.Router();
 
-router.get('/:vehicle_id/', authenticateJWT, async (req, res) => {
+router.get('/:vehicle_id', authenticateJWT, async (req, res) => {
   try {
     const { vehicle_id } = req.params;
     const vehicleObjectId =new  mongoose.Types.ObjectId(vehicle_id); // Convert to ObjectId using new
@@ -22,7 +22,22 @@ router.get('/:vehicle_id/', authenticateJWT, async (req, res) => {
   }
 });
 
-router.post('/:vehicle_id/', authenticateJWT, async (req, res) => {
+router.get('/', authenticateJWT, async (req, res) => {
+  try {
+    console.log('Fetching all reviews');
+
+    const reviews = await Review.find({}).populate('user_id vehicle_id');
+    console.log('Reviews fetched:', reviews);
+
+    res.status(200).send(reviews);
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    res.status(500).send({ error: error.message });
+  }
+});
+
+
+router.post('/:vehicle_id', authenticateJWT, async (req, res) => {
   try {
     const { vehicle_id } = req.params;
     const vehicleObjectId = new mongoose.Types.ObjectId(vehicle_id); // Convert to ObjectId using new
