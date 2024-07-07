@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap';
-import axiosInstance from './axiosInstance';
-import Header from './Header'; // Assuming you have a Header component
+import axiosInstance from '../utilities/axiosInstance';
+import Header from '../utilities/Header'; // Assuming you have a Header component
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BookingDetails() {

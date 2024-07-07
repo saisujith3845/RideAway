@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import "bootstrap/dist/css/bootstrap.min.css";
-import axiosInstance from './axiosInstance';
-import Header from './Header';
-import UnAuthorizedPage from './UnAuthorizedPage';
+import axiosInstance from '../utilities/axiosInstance';
+import Header from '../utilities/Header';
+import UnAuthorizedPage from '../utilities/UnAuthorizedPage';
 import Button from 'react-bootstrap/Button'; // Make sure to import Button from react-bootstrap
 import ReviewModal from './ReviewModal'; // Import the ReviewModal component
 

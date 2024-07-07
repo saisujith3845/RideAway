@@ -3,7 +3,7 @@ import { Form, Button, Container } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import axiosInstance from './axiosInstance';
 import Header from './Header';
-import AdminHeader from './admin/AdminHeader';
+import AdminHeader from '../admin/AdminHeader';
 
 const UserInfo = () => {
     const { user_id } = useParams();

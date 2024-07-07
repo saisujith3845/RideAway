@@ -9,7 +9,10 @@ const vehicleSchema = new mongoose.Schema({
     fuelType: { type: String, enum: ['petrol', 'diesel','electric','hybrid'] }, 
     rentPerHrs: { type: Number }, 
     availability: { type: Boolean, default: true },
-    review_id:{type:mongoose.Schema.Types.ObjectId,ref:'Review',required:true}
+    img: {
+        data: Buffer,
+        contentType: String,
+      }
 });
 
 module.exports = mongoose.model('Vehicle', vehicleSchema);

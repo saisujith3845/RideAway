@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Container, Alert } from 'react-bootstrap';
-import axiosInstance from '../axiosInstance';
+import axiosInstance from '../utilities/axiosInstance';
 import Layout from './Layout';
 
 const UsersTable = () => {

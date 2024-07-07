@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Container, Grid, Card, CardContent, Typography,  Divider, Box, Button, useMediaQuery, useTheme } from '@mui/material';
-import axiosInstance from './axiosInstance';
-import Header from './Header';
+import { Container, Grid, Card, CardContent, Typography, Divider, Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import axiosInstance from '../utilities/axiosInstance';
+import Header from '../utilities/Header';
 import Rating from '@mui/material/Rating';
-import { Carousel } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const VehicleDetails = () => {
   const { vehicle_id } = useParams();
@@ -31,7 +31,7 @@ const VehicleDetails = () => {
     return <div>Loading...</div>; // or handle loading state as per your UI/UX
   }
 
-  const images = ['/vehicle1.jpg', '/vehicle1.jpg', '/vehicle1.jpg']; // Example images
+  const image = vehicleDetails.img ? `data:${vehicleDetails.img.contentType};base64,${vehicleDetails.img.data}` : "logofinal.png";; // Example images
 
   return (
     <>
@@ -41,23 +41,22 @@ const VehicleDetails = () => {
           {/* Image Carousel */}
           <Grid item xs={12} md={6}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Carousel>
-                {images.map((image, index) => (
-                  <Carousel.Item key={index}>
-                    <img
-                      className="d-block w-100"
-                      src={image}
-                      alt={`${vehicleDetails.make} ${vehicleDetails.model}`}
-                    />
-                  </Carousel.Item>
-                ))}
-              </Carousel>
+              <img
+                className="d-block w-100"
+                src={image}
+                alt={`${vehicleDetails.make} ${vehicleDetails.model}`
+              }
+              style={{width:'480px',height:'400px'}}
+              />
             </Card>
           </Grid>
           {/* Details */}
           <Grid item xs={12} md={6}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <CardContent sx={{ flex: 1 }}>
+              <Typography variant="subtitle1" align="center" gutterBottom>
+                  Vehicle Details
+                </Typography>
                 <Typography variant="h4" component="div" gutterBottom align="center">
                   {vehicleDetails.make} {vehicleDetails.model}
                 </Typography>
@@ -71,9 +70,7 @@ const VehicleDetails = () => {
                   ${vehicleDetails.rentPerHrs} per hour
                 </Typography>
                 <Divider sx={{ my: 2 }} />
-                <Typography variant="subtitle1" align="center" gutterBottom>
-                  Vehicle Details
-                </Typography>
+               
                 {/* Additional details specific to the vehicle can be added here */}
               </CardContent>
               <Box sx={{ textAlign: 'center', pb: 2 }}>

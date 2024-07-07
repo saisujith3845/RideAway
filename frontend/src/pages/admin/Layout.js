@@ -1,4 +1,4 @@
-import Footer from "../Footer";
+import Footer from "../utilities/Footer";
 import Header from "./AdminHeader"
 
 const Layout=({children})=>{

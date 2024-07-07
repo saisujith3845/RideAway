@@ -22,9 +22,12 @@ function Register() {
       console.log(response.data);
 
       // Redirect to login page or show success message
+      alert("Registered Successfully!!")
       navigate('/login');
+
     } catch (error) {
       console.error('There was an error registering!', error);
+      alert("something went wrong..try Again !!");
     }
   };
 

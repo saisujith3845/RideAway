@@ -1,20 +1,19 @@
-// Vehicles.js
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../utilities/axiosInstance';
 import Card from 'react-bootstrap/Card';
 import "bootstrap/dist/css/bootstrap.css";
-import BookingForm from './BookingForm';
-import Header from './Header';
-
-import UnAuthorizedPage from './UnAuthorizedPage';
+import BookingForm from '../Bookings/BookingForm';
+import Header from '../utilities/Header';
+import UnAuthorizedPage from '../utilities/UnAuthorizedPage';
 
 function VehicleCard({ details }) {
+    const imageUrl = details.img ? `data:${details.img.contentType};base64,${details.img.data}` : "logofinal.png";
+
     return (
         <Card style={{ width: "18rem" }} className='m-3'>
             <Link to={`/vehicles/${details._id}`} className="card-link" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <Card.Img src='vehicle1.jpg' />
+                <Card.Img variant="top" src={imageUrl} style={{width:'288px',height:'157px'}}/>
                 <Card.Body className='text-center bg-secondary-subtle'>
                     <Card.Title className='fs-3'>{details.make} {details.model}</Card.Title>
                     <Card.Text className='fs-6'>{details.fuelType} {details.year}</Card.Text>
@@ -32,9 +31,8 @@ function VehicleCard({ details }) {
 
 const Vehicles = () => {
     const [allVehicles, setAllVehicles] = useState([]);
-    const [notifications, setNotifications] = useState([]);
-
-    const udata=localStorage.getItem('userData');
+   
+    const udata = localStorage.getItem('userData');
 
     useEffect(() => {
         async function fetchData() {
@@ -45,35 +43,32 @@ const Vehicles = () => {
                 console.error('Error fetching data:', error);
             }
         }
-        const fetchNotifications = async () => {
-            try {
-              const response = await axiosInstance.get('/notifications');
-              setNotifications(response.data); 
-            } catch (error) {
-              console.error('Error fetching notifications:', error);
-            }
-        }
+
 
         fetchData();
-        fetchNotifications();
-    }, [allVehicles,notifications]);
+        
+    }, [allVehicles]);
 
     const availableVehicles = allVehicles.filter(vehicle => vehicle.availability);
 
     return (
         <>
-           {udata?<>
-            <Header notificationsData={notifications}/>
-            <div className='mx-5'>
-                <div className='d-flex flex-wrap justify-content-start'>
-                    {availableVehicles.map((vehicle) => (
-                        <div key={vehicle._id} className='col-lg-3 col-md-6 col-sm-12'>
-                            <VehicleCard details={vehicle} />
+            {udata ? (
+                <>
+                    <Header  />
+                    <div className='mx-5'>
+                        <div className='d-flex flex-wrap justify-content-start'>
+                            {availableVehicles.map((vehicle) => (
+                                <div key={vehicle._id} className='col-lg-3 col-md-6 col-sm-12'>
+                                    <VehicleCard details={vehicle} />
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-            </div>
-            </>: <UnAuthorizedPage /> }
+                    </div>
+                </>
+            ) : (
+                <UnAuthorizedPage />
+            )}
         </>
     );
 };

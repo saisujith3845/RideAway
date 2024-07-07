@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axiosInstance from './axiosInstance';
-import Header from './Header';
+import axiosInstance from '../utilities/axiosInstance';
+import Header from '../utilities/Header';
 import { Container, Box, Typography, Paper, Grid, Avatar, Rating, CircularProgress } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import dayjs from 'dayjs';

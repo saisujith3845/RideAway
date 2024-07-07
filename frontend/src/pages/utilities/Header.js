@@ -8,7 +8,7 @@ import React, { useContext } from 'react';
 import "bootstrap/dist/css/bootstrap.css";
 import { DataContext } from "./DataContext";
 
-function Header({notificationsData}) {
+function Header() {
   const navigate = useNavigate();
   const { data,setData,setToken,notifications } = useContext(DataContext);
 
@@ -24,7 +24,7 @@ function Header({notificationsData}) {
   return (
     <Navbar className="bg-warning">
       <Container>
-        <Navbar.Brand className="fs-3 fw-bold" href="/vehicles">
+        <Navbar.Brand className="fs-3 fw-bold" as={Link} to="/vehicles">
         <Image src="logofinal.png" roundedCircle style={{ width: '50px', height: '50px' ,marginRight:'10px' }} />
           Ride Away
         </Navbar.Brand>

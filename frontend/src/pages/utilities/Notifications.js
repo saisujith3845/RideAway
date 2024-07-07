@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useContext } from 'react';
 import { Container, Row, Col, ListGroup } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa'; // Import Trash icon from react-icons/fa
 import axiosInstance from './axiosInstance'; 
 import Header from './Header'; 
+import { DataContext } from './DataContext';
 
 function Notifications() {
-  const [notifications, setNotifications] = useState([]);
+  const {notifications, setNotifications} = useContext(DataContext);
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await axiosInstance.get('/notifications');
-        setNotifications(response.data); 
-      } catch (error) {
-        console.error('Error fetching notifications:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchNotifications = async () => {
+  //     try {
+  //       const response = await axiosInstance.get('/notifications');
+  //       setNotifications(response.data); 
+  //     } catch (error) {
+  //       console.error('Error fetching notifications:', error);
+  //     }
+  //   };
 
-    fetchNotifications();
-  }, []);
+  //   fetchNotifications();
+  // }, []);
 
   const getTimeDifference = (createdAt) => {
     const now = new Date();

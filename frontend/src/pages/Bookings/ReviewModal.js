@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../utilities/axiosInstance';
 
 const ReviewModal = ({ show, handleClose, vehicleId }) => {
   const [rating, setRating] = useState(0);

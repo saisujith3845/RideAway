@@ -1,20 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Vehicles from './pages/Vehicles';
+import Home from './pages/Authentication/Home';
+import Login from './pages/Authentication/Login';
+import Register from './pages/Authentication/Register';
+import Vehicles from './pages/vehicles/Vehicles';
 import './App.css'
-import Bookings from './pages/Bookings';
-import VehicleDetails from './pages/VehicleDetails';
-import VehicleReviews from './pages/VehicleReviews';
-import UserInfo from './pages/UserInfo';
-import BookingDetails from './pages/BookingDetails';
+import Bookings from './pages/Bookings/Bookings';
+import VehicleDetails from './pages/vehicles/VehicleDetails';
+import VehicleReviews from './pages/vehicles/VehicleReviews';
+import UserInfo from './pages/utilities/UserInfo';
+import BookingDetails from './pages/Bookings/BookingDetails';
 import GetVehicles from './pages/admin/GetVehicles';
-import Error from './pages/Error';
+import Error from './pages/utilities/Error';
 import BookingsTable from './pages/admin/BookingsTable';
 import UsersTable from './pages/admin/UsersTable';
-import Notifications from './pages/Notifications';
+import Notifications from './pages/utilities/Notifications'
 import ReviewsTable from './pages/admin/ReviewsTable';
 
 function App() {

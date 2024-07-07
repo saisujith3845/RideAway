@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import axiosInstance from './axiosInstance';
+import axiosInstance from '../utilities/axiosInstance';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function BookingForm({ vehicleId, onBookingConfirmed }) {
@@ -46,11 +46,13 @@ function BookingForm({ vehicleId, onBookingConfirmed }) {
       onBookingConfirmed(); 
 
       // Redirect to /bookings page using navigate function
+      alert("Booking Confirmed..HappyJourney!!")
       navigate('/bookings');
 
       handleClose(); // Close modal or perform any other necessary cleanup
     } catch (error) {
       console.error('Error creating booking:', error.response.data);
+      alert("Error Occured ..try Again!!");
     }
   };
 
