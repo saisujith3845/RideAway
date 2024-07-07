@@ -62,36 +62,42 @@ const UsersTable = () => {
 
   return (
     <Layout>
-    <Container>
-     
-      <h1 className="mt-4 mb-4 display-5 text-center">Users</h1>
-      <Table responsive striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user._id}>
-              <td>{user._id}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.phone}</td>
-              <td>
-                <Button variant="danger" onClick={() => deleteUser(user._id)}>
-                  Delete
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </Container>
+      <Container>
+        <h1 className="mt-4 mb-4 display-5 text-center">Users</h1>
+        {users.length === 0 ? (
+          <Alert variant="warning" className="mt-5 text-center">
+            <h4>No Users Found, Admin!</h4>
+            <p>Our user pool is a bit quiet right now. Let's gear up to welcome more members soon!</p>
+          </Alert>
+        ) : (
+          <Table responsive striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user._id}>
+                  <td>{user._id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.phone}</td>
+                  <td>
+                    <Button variant="danger" onClick={() => deleteUser(user._id)}>
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </Container>
     </Layout>
   );
 };

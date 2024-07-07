@@ -10,57 +10,63 @@ import { DataContext } from "./DataContext";
 
 function Header() {
   const navigate = useNavigate();
-  const { data,setData,setToken,notifications } = useContext(DataContext);
+  const { data, setData, setToken, notifications } = useContext(DataContext);
 
   const handleLogout = () => {
-  
-    localStorage.removeItem('token'); 
-  localStorage.removeItem('userData');
-  setToken(null); 
-  setData(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
+    setToken(null);
+    setData(null);
     navigate('/');
   };
 
   return (
-    <Navbar className="bg-warning">
+    <Navbar className="bg-warning" expand="lg">
       <Container>
         <Navbar.Brand className="fs-3 fw-bold" as={Link} to="/vehicles">
-        <Image src="logofinal.png" roundedCircle style={{ width: '50px', height: '50px' ,marginRight:'10px' }} />
+          <Image src="logofinal.png" roundedCircle style={{ width: '50px', height: '50px', marginRight: '10px' }} />
           Ride Away
         </Navbar.Brand>
-        <Nav className="ms-auto d-flex justify-content-center align-items-center ">
-          <Nav.Link as={Link} to="/notifications" className="text-center">
-           {notifications?.length>0 ?<Badge badgeContent={notifications.length} color="success">
-           <NotificationsRounded fontSize="medium" />
-                </Badge>:  <NotificationsRounded fontSize="medium" />} 
-            <br />
-            <span className="icon-text text-dark">Notifications</span>
-          </Nav.Link>
-          <Nav.Link as={Link} to={`/bookings`} className="text-center">
-            <AppRegistration fontSize="small" />
-            <br />
-            <span className="icon-text text-dark">Bookings</span>
-          </Nav.Link>
-          <Nav.Link className="text-center">
-            <AccountCircleIcon fontSize="medium" />
-            <br />
-            <NavDropdown
-              id="nav-dropdown-dark-example"
-              title="Profile"
-              menuVariant="light"
-            >
-              <NavDropdown.Item>
-                <Link to={`/user/${data._id}`} className="text-decoration-none text-reset">
-                  Account Details
-                </Link>
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={handleLogout}>
-                Log Out
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav.Link>
-        </Nav>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto d-flex justify-content-center align-items-center">
+            <Nav.Link as={Link} to="/notifications" className="text-center">
+              {notifications?.length > 0 ? (
+                <Badge badgeContent={notifications.length} color="success">
+                  <NotificationsRounded fontSize="medium" />
+                </Badge>
+              ) : (
+                <NotificationsRounded fontSize="medium" />
+              )}
+              <br />
+              <span className="icon-text text-dark">Notifications</span>
+            </Nav.Link>
+            <Nav.Link as={Link} to={`/bookings`} className="text-center">
+              <AppRegistration fontSize="small" />
+              <br />
+              <span className="icon-text text-dark">Bookings</span>
+            </Nav.Link>
+            <Nav.Link className="text-center">
+              <AccountCircleIcon fontSize="medium" />
+              <br />
+              <NavDropdown
+                id="nav-dropdown-dark-example"
+                title="Profile"
+                menuVariant="light"
+              >
+                <NavDropdown.Item>
+                  <Link to={`/user/${data._id}`} className="text-decoration-none text-reset">
+                    Account Details
+                  </Link>
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={handleLogout}>
+                  Log Out
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );

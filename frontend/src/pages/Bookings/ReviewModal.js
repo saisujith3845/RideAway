@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import axiosInstance from '../utilities/axiosInstance';
+import Rating from '@mui/material/Rating';
 
 const ReviewModal = ({ show, handleClose, vehicleId }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-  const udata=localStorage.getItem('userData');
+  const userData = JSON.parse(localStorage.getItem('userData'));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post(`/reviews/${vehicleId}`, { vehicle_id: vehicleId,user_id:udata._id, rating, comment });
+      await axiosInstance.post(`/reviews/${vehicleId}`, { vehicle_id: vehicleId, user_id: userData._id, rating, comment });
       alert('Review submitted successfully');
       handleClose();
     } catch (error) {
@@ -27,12 +28,13 @@ const ReviewModal = ({ show, handleClose, vehicleId }) => {
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="rating">
             <Form.Label>Rating</Form.Label>
-            <Form.Control
-              type="number"
+            <Rating
+              name="rating"
               value={rating}
-              onChange={(e) => setRating(e.target.value)}
-              min="1"
-              max="5"
+              onChange={(event, newValue) => {
+                setRating(newValue);
+              }}
+              precision={0.5} // Adjust precision if needed, e.g., 0.5 for half stars
               required
             />
           </Form.Group>

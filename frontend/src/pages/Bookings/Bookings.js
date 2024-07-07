@@ -44,40 +44,48 @@ function Bookings() {
         <>
           <Header />
           {error && <div>Error: {error}</div>}
-          <Table bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Vehicle</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Pickup Location</th>
-                <th>Dropoff Location</th>
-                <th>Total Cost</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.map((booking, index) => (
-                <tr key={booking._id} >
-                  <td>{index + 1}</td>
-                  <td onClick={() => handleRowClick(booking._id)}>{`${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year})`}</td>
-                  <td>{new Date(booking.start_date).toLocaleDateString()}</td>
-                  <td>{new Date(booking.end_date).toLocaleDateString()}</td>
-                  <td>{booking.pickupLocation}</td>
-                  <td>{booking.dropoffLocation}</td>
-                  <td>{booking.totalCost}</td>
-                  <td>{booking.status}</td>
-                  {booking.status === 'confirmed' && (
-                    <td>
-                      <Button variant='warning' onClick={() => review(booking.vehicle_id._id)}>Review</Button>
-                    </td>
-                  )}
+          <h1 className="text-center mb-3 display-5">Bookings</h1>
+          {bookings.length > 0 ? (
+            <Table bordered hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Vehicle</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Pickup Location</th>
+                  <th>Dropoff Location</th>
+                  <th>Total Cost</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {bookings.map((booking, index) => (
+                  <tr key={booking._id} >
+                    <td>{index + 1}</td>
+                    <td onClick={() => handleRowClick(booking._id)}>{`${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year})`}</td>
+                    <td>{new Date(booking.start_date).toLocaleDateString()}</td>
+                    <td>{new Date(booking.end_date).toLocaleDateString()}</td>
+                    <td>{booking.pickupLocation}</td>
+                    <td>{booking.dropoffLocation}</td>
+                    <td>₹{booking.totalCost}</td>
+                    <td>{booking.status}</td>
+                    {booking.status === 'confirmed' && (
+                      <td>
+                        <Button variant='warning' onClick={() => review(booking.vehicle_id._id)}>Review</Button>
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <div className="text-center my-4">
+              <div>✨ Your Journey Awaits! ✨</div>
+              <div>Our booking slots are eagerly anticipating your next adventure. Start your experience with us today!</div>
+            </div>
+          )}
           <ReviewModal
             show={modalShow}
             handleClose={() => setModalShow(false)}

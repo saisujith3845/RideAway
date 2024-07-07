@@ -18,7 +18,7 @@ function VehicleCard({ details }) {
                     <Card.Title className='fs-3'>{details.make} {details.model}</Card.Title>
                     <Card.Text className='fs-6'>{details.fuelType} {details.year}</Card.Text>
                     <Card.Text className='fs-5'>
-                        ${details.rentPerHrs} per hour
+                    ₹{details.rentPerHrs} per hour
                     </Card.Text>
                 </Card.Body>
             </Link>
@@ -44,10 +44,8 @@ const Vehicles = () => {
             }
         }
 
-
         fetchData();
-        
-    }, [allVehicles]);
+    }, []);
 
     const availableVehicles = allVehicles.filter(vehicle => vehicle.availability);
 
@@ -55,15 +53,23 @@ const Vehicles = () => {
         <>
             {udata ? (
                 <>
-                    <Header  />
+                    <Header />
                     <div className='mx-5'>
-                        <div className='d-flex flex-wrap justify-content-start'>
-                            {availableVehicles.map((vehicle) => (
-                                <div key={vehicle._id} className='col-lg-3 col-md-6 col-sm-12'>
-                                    <VehicleCard details={vehicle} />
-                                </div>
-                            ))}
-                        </div>
+                        {availableVehicles.length > 0 ? (
+                            <div className='d-flex flex-wrap justify-content-start'>
+                                {availableVehicles.map((vehicle) => (
+                                    <div key={vehicle._id} className='col-lg-3 col-md-6 col-sm-12'>
+                                        <VehicleCard details={vehicle} />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className='text-center fs-4 my-5'>
+                            🚗 No Vehicles Today! 🚗
+                            <br />
+                                It looks like our vehicles are all out on adventures. Check back soon for some exciting new rides!
+                            </div>
+                        )}
                     </div>
                 </>
             ) : (

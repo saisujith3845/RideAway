@@ -36,10 +36,17 @@ router.get('/vehicles', async (req, res) => {
     }
 });
 
-router.delete('/vehicles/:vehicle_id', async (req, res) => {
+router.delete('/bookings/:booking_id', async (req, res) => {
     try {
-        await Vehicle.findByIdAndDelete(req.params.vehicle_id);
-        res.status(200).send({ message: 'Vehicle deleted successfully' });
+        const deletedBooking = await Booking.findByIdAndDelete(req.params.booking_id);
+
+        if (!deletedBooking) {
+            return res.status(404).send({ error: 'Booking not found' });
+        }
+
+        await Vehicle.findByIdAndUpdate(deletedBooking.vehicle_id, { availability: true });
+
+        res.status(200).send({ message: 'Booking deleted successfully' });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }

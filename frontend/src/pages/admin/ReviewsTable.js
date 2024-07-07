@@ -9,7 +9,7 @@ const ReviewsTable = () => {
 
   useEffect(() => {
     fetchReviews();
-  }, [reviews]);
+  }, []);
 
   const fetchReviews = async () => {
     try {
@@ -63,34 +63,41 @@ const ReviewsTable = () => {
     <Layout>
       <Container>
         <h1 className="mt-4 mb-4 display-5 text-center">Reviews</h1>
-        <Table responsive striped bordered hover>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Vehicle ID</th>
-              <th>Vehicle Name</th>
-              <th>Rating</th>
-              <th>Comment</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reviews.map((review) => (
-              <tr key={review._id}>
-                <td>{review._id}</td>
-                <td>{review.vehicle_id._id}</td>
-                <td>{`${review.vehicle_id.make} ${review.vehicle_id.model} (${review.vehicle_id.year})`}</td>
-                <td>{review.rating}</td>
-                <td>{review.comment}</td>
-                <td>
-                  <Button variant="danger" onClick={() => deleteReview(review._id)}>
-                    Delete
-                  </Button>
-                </td>
+        {reviews.length === 0 ? (
+          <Alert variant="info" className="mt-5 text-center">
+            <h4>No Reviews in Sight, Admin!</h4>
+            <p>Our review page is currently blank. Let's get ready for the next wave of insights soon!</p>
+          </Alert>
+        ) : (
+          <Table responsive striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Vehicle ID</th>
+                <th>Vehicle Name</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {reviews.map((review) => (
+                <tr key={review._id}>
+                  <td>{review._id}</td>
+                  <td>{review.vehicle_id._id}</td>
+                  <td>{`${review.vehicle_id.make} ${review.vehicle_id.model} (${review.vehicle_id.year})`}</td>
+                  <td>{review.rating}</td>
+                  <td>{review.comment}</td>
+                  <td>
+                    <Button variant="danger" onClick={() => deleteReview(review._id)}>
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Container>
     </Layout>
   );

@@ -46,7 +46,7 @@ function BookingForm({ vehicleId, onBookingConfirmed }) {
       onBookingConfirmed(); 
 
       // Redirect to /bookings page using navigate function
-      alert("Booking Confirmed..HappyJourney!!")
+      alert("Your booking request has been sent to the admin. Please wait for approval. Thank you!");
       navigate('/bookings');
 
       handleClose(); // Close modal or perform any other necessary cleanup

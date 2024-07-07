@@ -50,7 +50,7 @@ const VehicleReviews = () => {
                       <Typography variant="subtitle1" align="center">
                         {review.user_id.name}
                       </Typography>
-                      <Rating value={review.rating} readOnly />
+                      <Rating value={review.rating}  precision={0.5}  readOnly />
                       <Typography variant="body2" color="text.secondary" align="center" mt={1}>
                         {dayjs(review.date).format('MMM DD, YYYY')}
                       </Typography>
@@ -63,7 +63,7 @@ const VehicleReviews = () => {
               ))
             ) : (
               <Typography variant="body1" align="center" sx={{ mt: 4, width: '100%' }}>
-                No reviews available for this vehicle.
+                🌟 No Reviews Yet! 🌟 <br/>Your chance to be the first reviewer awaits. Book a vehicle and share your experience—let's kickstart the feedback!
               </Typography>
             )}
           </Grid>

@@ -134,57 +134,65 @@ const GetVehicles = () => {
   return (
     <Layout>
       <div className="container">
-        <h1 className="text-center mb-3">Vehicle Details</h1>
+      <h1 className="mt-4 mb-4 display-5 text-center">Vehicle Details</h1>
         <hr />
         <Button variant="warning" onClick={openAddModal} className="mb-3">
           Add Vehicle
         </Button>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Make</th>
-              <th>Model</th>
-              <th>Year</th>
-              <th>Type</th>
-              <th>Color</th>
-              <th>Fuel Type</th>
-              <th>Rent Per Hour</th>
-              <th>Availability</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {vehicles.map((vehicle, i) => (
-              <tr key={vehicle._id}>
-                <td>{i + 1}</td>
-                <td>{vehicle.make}</td>
-                <td>{vehicle.model}</td>
-                <td>{vehicle.year}</td>
-                <td>{vehicle.type}</td>
-                <td>{vehicle.color}</td>
-                <td>{vehicle.fuelType}</td>
-                <td>{vehicle.rentPerHrs}</td>
-                <td>{vehicle.availability ? "Available" : "Unavailable"}</td>
-                <td>
-                  <Button 
-                    variant="danger" 
-                    onClick={() => deleteVehicle(vehicle._id)}
-                  >
-                    Delete
-                  </Button>
-                  <Button 
-                    variant="warning" 
-                    className="mx-2" 
-                    onClick={() => openEditModal(vehicle)}
-                  >
-                    Edit
-                  </Button>
-                </td>
+
+        {vehicles.length === 0 ? (
+          <div className="alert alert-info text-center">
+            🌟 Elevate the Experience! 🌟 <br />
+            Attention, Admin! Our vehicle fleet is currently awaiting your touch. Add new vehicles to enhance our selection and elevate the experience for our users. Let's make every journey unforgettable!
+          </div>
+        ) : (
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Type</th>
+                <th>Color</th>
+                <th>Fuel Type</th>
+                <th>Rent Per Hour</th>
+                <th>Availability</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {vehicles.map((vehicle, i) => (
+                <tr key={vehicle._id}>
+                  <td>{i + 1}</td>
+                  <td>{vehicle.make}</td>
+                  <td>{vehicle.model}</td>
+                  <td>{vehicle.year}</td>
+                  <td>{vehicle.type}</td>
+                  <td>{vehicle.color}</td>
+                  <td>{vehicle.fuelType}</td>
+                  <td>{vehicle.rentPerHrs}</td>
+                  <td>{vehicle.availability ? "Available" : "Unavailable"}</td>
+                  <td>
+                    <Button 
+                      variant="danger" 
+                      onClick={() => deleteVehicle(vehicle._id)}
+                    >
+                      Delete
+                    </Button>
+                    <Button 
+                      variant="warning" 
+                      className="mx-2" 
+                      onClick={() => openEditModal(vehicle)}
+                    >
+                      Edit
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
 
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header closeButton>
