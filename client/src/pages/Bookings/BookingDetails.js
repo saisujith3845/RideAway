@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert, Card } from 'react-bootstrap';
 import axiosInstance from '../utilities/axiosInstance';
-import Header from '../utilities/Header'; // Assuming you have a Header component
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UserLayout from '../utilities/UserLayout';
 
 function BookingDetails() {
   const { booking_id } = useParams();
@@ -63,7 +63,7 @@ function BookingDetails() {
 
   return (
     <>
-      <Header />
+      <UserLayout >
       <Container className="mt-5">
         <h2 className="my-4 text-center">Booking Details</h2>
         {error && <Alert variant="danger">{error}</Alert>}
@@ -155,7 +155,7 @@ function BookingDetails() {
               </Form.Group>
 
               <div className="text-center">
-                <Button variant="primary" onClick={handleSaveChanges} className="me-2">
+                <Button variant="warning" onClick={handleSaveChanges} className="me-2">
                   Save Changes
                 </Button>
                 <Button variant="danger" onClick={handleDeleteBooking}>
@@ -166,6 +166,7 @@ function BookingDetails() {
           </Card.Body>
         </Card>
       </Container>
+      </UserLayout>
     </>
   );
 }

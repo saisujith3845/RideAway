@@ -5,8 +5,9 @@ import {
   useMediaQuery, useTheme, CircularProgress, Paper
 } from '@mui/material';
 import axiosInstance from '../utilities/axiosInstance';
-import Header from '../utilities/Header';
+
 import Rating from '@mui/material/Rating';
+import UserLayout from '../utilities/UserLayout';
 
 const VehicleDetails = () => {
   const { vehicle_id } = useParams();
@@ -49,7 +50,7 @@ const VehicleDetails = () => {
 
   return (
     <>
-      <Header />
+      <UserLayout>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Paper elevation={3} sx={{ p: 4 }}>
           <Grid container spacing={isSmallScreen ? 2 : 4} alignItems="stretch">
@@ -86,10 +87,10 @@ const VehicleDetails = () => {
                   </Typography>
                 </CardContent>
                 <Box sx={{ textAlign: 'center', pb: 2 }}>
-                  <Button variant="contained" color="primary" component={Link} to={`/vehicles/${vehicle_id}/reviews`} sx={{ m: 1 }}>
+                  <Button variant="contained" color="warning"  component={Link} to={`/vehicles/${vehicle_id}/reviews`} sx={{ m: 1 }}>
                     Check all reviews
                   </Button>
-                  <Button variant="outlined" component={Link} to="/vehicles" sx={{ m: 1 }}>
+                  <Button variant="outlined" color="error" component={Link} to="/vehicles" sx={{ m: 1 }}>
                     Back to Listings
                   </Button>
                 </Box>
@@ -98,6 +99,7 @@ const VehicleDetails = () => {
           </Grid>
         </Paper>
       </Container>
+      </UserLayout>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Container, Alert } from 'react-bootstrap';
 import axiosInstance from '../utilities/axiosInstance'; 
-import Layout from './Layout';
+import UserLayout from '../utilities/UserLayout';
 
 const BookingsTable = () => {
   const [bookings, setBookings] = useState([]);
@@ -96,7 +96,7 @@ const BookingsTable = () => {
   }
 
   return (
-    <Layout>
+    <UserLayout>
       <Container>
         <h1 className="mt-4 mb-4 display-5 text-center">Bookings</h1>
         {bookings.length === 0 ? (
@@ -138,7 +138,7 @@ const BookingsTable = () => {
           </Table>
         )}
       </Container>
-    </Layout>
+    </UserLayout>
   );
 };
 

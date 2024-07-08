@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Container, Alert } from 'react-bootstrap';
 import axiosInstance from '../utilities/axiosInstance';
-import Layout from './Layout';
+import UserLayout from '../utilities/UserLayout';
+import { Link } from 'react-router-dom';
 
 const UsersTable = () => {
   const [users, setUsers] = useState([]);
@@ -61,7 +62,7 @@ const UsersTable = () => {
   }
 
   return (
-    <Layout>
+    <UserLayout>
       <Container>
         <h1 className="mt-4 mb-4 display-5 text-center">Users</h1>
         {users.length === 0 ? (
@@ -84,7 +85,7 @@ const UsersTable = () => {
               {users.map((user) => (
                 <tr key={user._id}>
                   <td>{user._id}</td>
-                  <td>{user.name}</td>
+                  <td><Link to={`/user/${user._id}`}>{user.name}</Link></td>
                   <td>{user.email}</td>
                   <td>{user.phone}</td>
                   <td>
@@ -98,7 +99,7 @@ const UsersTable = () => {
           </Table>
         )}
       </Container>
-    </Layout>
+    </UserLayout>
   );
 };
 

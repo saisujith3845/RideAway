@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import axiosInstance from './axiosInstance';
-import Header from './Header';
-import AdminHeader from '../admin/AdminHeader';
+import UserLayout from './UserLayout';
 
 const UserInfo = () => {
     const { user_id } = useParams();
@@ -41,7 +40,7 @@ const UserInfo = () => {
     };
 
     return (<>
-       {Userdata?.isAdmin?<AdminHeader />:<Header />}
+       <UserLayout>
         <Container className='mt-3 w-50'>
             <h1 className='text-center'>Account Details</h1>
             <Form onSubmit={handleSubmit}>
@@ -82,6 +81,8 @@ const UserInfo = () => {
                 </Button>
             </Form>
         </Container>
+        </UserLayout>
+       
         </>
     );
 };

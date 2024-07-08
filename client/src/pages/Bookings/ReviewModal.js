@@ -48,10 +48,10 @@ const ReviewModal = ({ show, handleClose, vehicleId }) => {
               required
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="warning" type="submit" >
             Submit
           </Button>
-          <Button variant="secondary" onClick={handleClose} className="ml-2">
+          <Button variant="secondary" onClick={handleClose} className="mx-2">
             Cancel
           </Button>
         </Form>

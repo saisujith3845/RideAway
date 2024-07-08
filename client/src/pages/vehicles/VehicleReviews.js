@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../utilities/axiosInstance';
-import Header from '../utilities/Header';
 import { Container, Box, Typography, Paper, Grid, Avatar, Rating, CircularProgress } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import dayjs from 'dayjs';
+import UserLayout from '../utilities/UserLayout';
 
 const VehicleReviews = () => {
   const { vehicle_id } = useParams();
@@ -28,7 +28,7 @@ const VehicleReviews = () => {
 
   return (
     <>
-      <Header />
+      <UserLayout>
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Typography variant="h4" component="h2" gutterBottom align="center">
           Vehicle Reviews
@@ -69,6 +69,7 @@ const VehicleReviews = () => {
           </Grid>
         )}
       </Container>
+      </UserLayout>
     </>
   );
 };

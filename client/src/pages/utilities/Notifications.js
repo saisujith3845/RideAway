@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { Container, Row, Col, ListGroup } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa'; // Import Trash icon from react-icons/fa
 import axiosInstance from './axiosInstance';
-import Header from './Header';
 import { DataContext } from './DataContext';
+import UserLayout from './UserLayout';
 
 function Notifications() {
   const { notifications, setNotifications } = useContext(DataContext);
@@ -27,7 +27,7 @@ function Notifications() {
 
   return (
     <>
-      <Header />
+     <UserLayout>
       <Container className="mt-4">
         <h1 className="text-center mb-3 display-5">Notifications</h1>
         <Row className="justify-content-center">
@@ -53,6 +53,7 @@ function Notifications() {
           </Col>
         </Row>
       </Container>
+      </UserLayout>
     </>
   );
 }

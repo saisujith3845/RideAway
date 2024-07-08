@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axiosInstance from '../utilities/axiosInstance';
-import Header from '../utilities/Header';
+
 import UnAuthorizedPage from '../utilities/UnAuthorizedPage';
 import Button from 'react-bootstrap/Button'; // Make sure to import Button from react-bootstrap
 import ReviewModal from './ReviewModal'; // Import the ReviewModal component
+import UserLayout from '../utilities/UserLayout';
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
@@ -42,7 +43,7 @@ function Bookings() {
     <>
       {udata ? (
         <>
-          <Header />
+          <UserLayout>
           {error && <div>Error: {error}</div>}
           <h1 className="text-center mb-3 display-5">Bookings</h1>
           {bookings.length > 0 ? (
@@ -91,6 +92,7 @@ function Bookings() {
             handleClose={() => setModalShow(false)}
             vehicleId={currentVehicleId}
           />
+          </UserLayout>
         </>
       ) : (
         <UnAuthorizedPage />

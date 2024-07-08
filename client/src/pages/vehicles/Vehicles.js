@@ -4,8 +4,8 @@ import axiosInstance from '../utilities/axiosInstance';
 import Card from 'react-bootstrap/Card';
 import "bootstrap/dist/css/bootstrap.css";
 import BookingForm from '../Bookings/BookingForm';
-import Header from '../utilities/Header';
 import UnAuthorizedPage from '../utilities/UnAuthorizedPage';
+import UserLayout from '../utilities/UserLayout';
 
 function VehicleCard({ details }) {
     const imageUrl = details.img ? `data:${details.img.contentType};base64,${details.img.data}` : "logofinal.png";
@@ -53,7 +53,7 @@ const Vehicles = () => {
         <>
             {udata ? (
                 <>
-                    <Header />
+                    <UserLayout>
                     <div className='mx-5'>
                         {availableVehicles.length > 0 ? (
                             <div className='d-flex flex-wrap justify-content-start'>
@@ -71,6 +71,7 @@ const Vehicles = () => {
                             </div>
                         )}
                     </div>
+                    </UserLayout>
                 </>
             ) : (
                 <UnAuthorizedPage />

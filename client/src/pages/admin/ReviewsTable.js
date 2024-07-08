@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Container, Alert } from 'react-bootstrap';
 import axiosInstance from '../utilities/axiosInstance';
-import Layout from './Layout';
+import UserLayout from '../utilities/UserLayout';
+import { Link } from 'react-router-dom';
 
 const ReviewsTable = () => {
   const [reviews, setReviews] = useState([]);
@@ -60,7 +61,7 @@ const ReviewsTable = () => {
   }
 
   return (
-    <Layout>
+    <UserLayout>
       <Container>
         <h1 className="mt-4 mb-4 display-5 text-center">Reviews</h1>
         {reviews.length === 0 ? (
@@ -85,7 +86,7 @@ const ReviewsTable = () => {
                 <tr key={review._id}>
                   <td>{review._id}</td>
                   <td>{review.vehicle_id._id}</td>
-                  <td>{`${review.vehicle_id.make} ${review.vehicle_id.model} (${review.vehicle_id.year})`}</td>
+                  <td><Link to={`/vehicles/${review.vehicle_id._id}`}>{`${review.vehicle_id.make} ${review.vehicle_id.model} (${review.vehicle_id.year})`}</Link></td>
                   <td>{review.rating}</td>
                   <td>{review.comment}</td>
                   <td>
@@ -99,7 +100,7 @@ const ReviewsTable = () => {
           </Table>
         )}
       </Container>
-    </Layout>
+    </UserLayout>
   );
 };
 

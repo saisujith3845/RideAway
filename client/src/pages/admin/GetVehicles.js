@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../utilities/axiosInstance";
 import { Button, Table, Modal, Form } from "react-bootstrap";
-import Layout from "./Layout";
+import UserLayout from "../utilities/UserLayout";
+import { Link } from "react-router-dom";
 
 const GetVehicles = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -132,7 +133,7 @@ const GetVehicles = () => {
   };
 
   return (
-    <Layout>
+    <UserLayout>
       <div className="container">
       <h1 className="mt-4 mb-4 display-5 text-center">Vehicle Details</h1>
         <hr />
@@ -163,9 +164,11 @@ const GetVehicles = () => {
             </thead>
             <tbody>
               {vehicles.map((vehicle, i) => (
+                
                 <tr key={vehicle._id}>
+                  
                   <td>{i + 1}</td>
-                  <td>{vehicle.make}</td>
+                  <td><Link to={`/vehicles/${vehicle._id}`} >{vehicle.make}</Link></td>
                   <td>{vehicle.model}</td>
                   <td>{vehicle.year}</td>
                   <td>{vehicle.type}</td>
@@ -189,6 +192,7 @@ const GetVehicles = () => {
                     </Button>
                   </td>
                 </tr>
+               
               ))}
             </tbody>
           </Table>
@@ -319,7 +323,7 @@ const GetVehicles = () => {
           </Modal.Footer>
         </Modal>
       </div>
-    </Layout>
+    </UserLayout>
   );
 };
 
