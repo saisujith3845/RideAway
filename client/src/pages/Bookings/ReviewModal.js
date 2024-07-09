@@ -34,7 +34,7 @@ const ReviewModal = ({ show, handleClose, vehicleId }) => {
               onChange={(event, newValue) => {
                 setRating(newValue);
               }}
-              precision={0.5} // Adjust precision if needed, e.g., 0.5 for half stars
+              precision={0.5}
               required
             />
           </Form.Group>
