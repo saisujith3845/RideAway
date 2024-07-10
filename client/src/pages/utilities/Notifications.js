@@ -15,6 +15,7 @@ function Notifications() {
     const diffHours = Math.round(diffMs / (1000 * 60 * 60));
     return `${diffHours} hrs ago`;
   };
+  
 
   const handleDeleteNotification = async (notificationId) => {
     try {
@@ -25,11 +26,13 @@ function Notifications() {
     }
   };
 
+
+
   return (
     <>
      <UserLayout>
       <Container className="mt-4">
-        <h1 className="text-center mb-3 display-5">Notifications</h1>
+        <h1 className="text-center mb-3 fw-bolder display-5">Notifications</h1>
         <Row className="justify-content-center">
           <Col xs={12} md={8}>
             {notifications.length > 0 ? (

@@ -8,6 +8,7 @@ import UnAuthorizedPage from '../utilities/UnAuthorizedPage';
 import Button from 'react-bootstrap/Button'; // Make sure to import Button from react-bootstrap
 import ReviewModal from './ReviewModal'; // Import the ReviewModal component
 import UserLayout from '../utilities/UserLayout';
+import Loadingpage from '../utilities/Loadingpage';
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
@@ -16,14 +17,17 @@ function Bookings() {
   const [currentVehicleId, setCurrentVehicleId] = useState(null);
   const navigate = useNavigate();
   const udata = localStorage.getItem('userData');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const response = await axiosInstance.get('/bookings'); 
         setBookings(response.data);
+        setLoading(false);
       } catch (error) {
         setError(error.message);
+        setLoading(false)
       }
     };
 
@@ -39,15 +43,23 @@ function Bookings() {
     setModalShow(true);
   };
 
+
+  if (loading) {
+    return (
+      <Loadingpage />
+    );
+  }
+
+
   return (
     <>
       {udata ? (
         <>
           <UserLayout>
           {error && <div>Error: {error}</div>}
-          <h1 className="text-center mb-3 display-5">Bookings</h1>
+          <h1 className="text-center mb-3 fw-bolder display-5">Bookings</h1>
           {bookings.length > 0 ? (
-            <Table bordered hover>
+            <Table bordered hover responsive>
               <thead>
                 <tr>
                   <th>#</th>

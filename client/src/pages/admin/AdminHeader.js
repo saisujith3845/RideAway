@@ -9,7 +9,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import React, { useContext } from 'react';
 import "bootstrap/dist/css/bootstrap.css";
 import { DataContext } from "../utilities/DataContext";
-
+import logo from './logofinal.png'
 function AdminHeader() {
   const navigate = useNavigate();
   const { data, setData, setToken } = useContext(DataContext);
@@ -23,10 +23,10 @@ function AdminHeader() {
   };
 
   return (
-    <Navbar className="bg-warning p-0" expand="lg">
+    <Navbar className="bg-warning p-0 fluid" expand="lg">
       <Container>
         <Navbar.Brand className="fs-3 fw-bold" href="/vehicles">
-          <Image src="logofinal.png" roundedCircle style={{ width: '50px', height: '50px', marginRight: '10px' }} />
+          <Image src={logo} roundedCircle style={{ width: '50px', height: '50px', marginRight: '10px' }} />
           Ride Away
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

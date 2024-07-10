@@ -3,6 +3,7 @@ import axiosInstance from "../utilities/axiosInstance";
 import { Button, Table, Modal, Form } from "react-bootstrap";
 import UserLayout from "../utilities/UserLayout";
 import { Link } from "react-router-dom";
+import Loadingpage from "../utilities/Loadingpage";
 
 const GetVehicles = () => {
   const [vehicles, setVehicles] = useState([]);
@@ -18,12 +19,14 @@ const GetVehicles = () => {
     availability: true,
     img: null,
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
         const response = await axiosInstance.get('/vehicles');
         setVehicles(response.data);
+        setLoading(false)
       } catch (error) {
         console.error("Error fetching vehicles data:", error);
         alert('Something went wrong, please try again.');
@@ -132,10 +135,16 @@ const GetVehicles = () => {
     setShowModal(true);
   };
 
+  if (loading) {
+    return (
+      <Loadingpage />
+    );
+  }
+
   return (
     <UserLayout>
       <div className="container">
-      <h1 className="mt-4 mb-4 display-5 text-center">Vehicle Details</h1>
+      <h1 className="mt-4 mb-4 display-5 fw-bolder text-center">Vehicle Details</h1>
         <hr />
         <Button variant="warning" onClick={openAddModal} className="mb-3">
           Add Vehicle

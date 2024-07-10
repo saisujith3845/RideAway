@@ -2,19 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Container, Alert } from 'react-bootstrap';
 import axiosInstance from '../utilities/axiosInstance'; 
 import UserLayout from '../utilities/UserLayout';
+import Loadingpage from '../utilities/Loadingpage';
 
 const BookingsTable = () => {
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchBookings();
-  }, []);
+  }, [bookings]);
 
   const fetchBookings = async () => {
     try {
       const response = await axiosInstance.get('/admin/bookings');
       setBookings(response.data);
+      setLoading(false)
       setError(null); 
     } catch (error) {
       if (error.response && error.response.status === 403) {
@@ -95,10 +98,17 @@ const BookingsTable = () => {
     return <ErrorPage message={error} />;
   }
 
+  if (loading) {
+    return (
+      <Loadingpage/>
+    );
+  }
+
+
   return (
     <UserLayout>
       <Container>
-        <h1 className="mt-4 mb-4 display-5 text-center">Bookings</h1>
+        <h1 className="mt-4 mb-4 display-5 fw-bolder text-center">Bookings</h1>
         {bookings.length === 0 ? (
           <Alert variant="info" className="mt-5 text-center">
             <h4>📅 No Bookings Found, Admin! 📅</h4>
@@ -127,10 +137,10 @@ const BookingsTable = () => {
                   </td>
                   <td>{booking.status}</td>
                   <td>
-                    {booking.status !== 'confirmed' && <Button variant="success" className='mx-2' onClick={() => confirmBooking(booking._id)}>Confirm</Button>}
+                    {booking.status !== 'confirmed' &&( <><Button variant="success" className='mx-2' onClick={() => confirmBooking(booking._id)}>Confirm</Button>
                     <Button variant="danger" onClick={() => deleteBooking(booking._id)}>
                       Delete
-                    </Button>
+                    </Button></>)}
                   </td>
                 </tr>
               ))}

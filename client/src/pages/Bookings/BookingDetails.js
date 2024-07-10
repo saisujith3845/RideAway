@@ -65,7 +65,7 @@ function BookingDetails() {
     <>
       <UserLayout >
       <Container className="mt-5">
-        <h2 className="my-4 text-center">Booking Details</h2>
+        <h2 className="my-4 fw-bolder text-center">Booking Details</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         <Card>
           <Card.Body>

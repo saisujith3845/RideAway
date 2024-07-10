@@ -3,24 +3,28 @@ import { Table, Button, Container, Alert } from 'react-bootstrap';
 import axiosInstance from '../utilities/axiosInstance';
 import UserLayout from '../utilities/UserLayout';
 import { Link } from 'react-router-dom';
+import Loadingpage from '../utilities/Loadingpage';
 
 const UsersTable = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [users]);
 
   const fetchUsers = async () => {
     try {
       const response = await axiosInstance.get('/admin/users');
       const filteredUsers = response.data.filter(user => !user.isAdmin); // Filter users based on isAdmin property
       setUsers(filteredUsers);
+      setLoading(false);
       setError(null); // Clear any previous errors
     } catch (error) {
       if (error.response && error.response.status === 403) {
         setError('403 Forbidden: You do not have permission to access this resource.');
+        
       } else {
         setError('Error fetching users.');
       }
@@ -57,6 +61,13 @@ const UsersTable = () => {
     );
   };
 
+  if (loading) {
+    return (
+      <Loadingpage />
+    );
+  }
+
+   
   if (error) {
     return <ErrorPage message={error} />;
   }
@@ -64,7 +75,8 @@ const UsersTable = () => {
   return (
     <UserLayout>
       <Container>
-        <h1 className="mt-4 mb-4 display-5 text-center">Users</h1>
+        <h1 className="mt-4 mb-4 display-5 fw-bolder text-center">Users</h1>
+       
         {users.length === 0 ? (
           <Alert variant="warning" className="mt-5 text-center">
             <h4>No Users Found, Admin!</h4>
@@ -82,7 +94,8 @@ const UsersTable = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              
+              { users.map((user) => (
                 <tr key={user._id}>
                   <td>{user._id}</td>
                   <td><Link to={`/user/${user._id}`}>{user.name}</Link></td>

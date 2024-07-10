@@ -30,7 +30,7 @@ const VehicleReviews = () => {
     <>
       <UserLayout>
       <Container maxWidth="md" sx={{ mt: 4 }}>
-        <Typography variant="h4" component="h2" gutterBottom align="center">
+        <Typography variant="h4" component="h2" gutterBottom align="center" className='fw-bolder'>
           Vehicle Reviews
         </Typography>
         {loading ? (

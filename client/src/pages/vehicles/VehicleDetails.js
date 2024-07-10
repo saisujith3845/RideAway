@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   Container, Grid, Card, CardContent, Typography, Divider, Box, Button,
-  useMediaQuery, useTheme, CircularProgress, Paper
+  useMediaQuery, useTheme, Paper
 } from '@mui/material';
 import axiosInstance from '../utilities/axiosInstance';
 
 import Rating from '@mui/material/Rating';
 import UserLayout from '../utilities/UserLayout';
+import Error from '../utilities/Error';
+import Loadingpage from '../utilities/Loadingpage';
 
 const VehicleDetails = () => {
   const { vehicle_id } = useParams();
@@ -19,8 +21,10 @@ const VehicleDetails = () => {
       try {
         const res = await axiosInstance.get(`/vehicles/${vehicle_id}`);
         setVehicleDetails(res.data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching vehicle details:', error);
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -34,15 +38,15 @@ const VehicleDetails = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-        <CircularProgress />
-      </Box>
+      <Loadingpage />
     );
   }
 
+  
   if (!vehicleDetails) {
-    return <Typography variant="h6" align="center" color="error">Error loading vehicle details.</Typography>;
+    return <Error />;
   }
+
 
   const image = vehicleDetails.img
     ? `data:${vehicleDetails.img.contentType};base64,${vehicleDetails.img.data}`
@@ -51,6 +55,8 @@ const VehicleDetails = () => {
   return (
     <>
       <UserLayout>
+       
+
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Paper elevation={3} sx={{ p: 4 }}>
           <Grid container spacing={isSmallScreen ? 2 : 4} alignItems="stretch">
@@ -79,7 +85,7 @@ const VehicleDetails = () => {
                     {vehicleDetails.fuelType} | {vehicleDetails.year}
                   </Typography>
                   <Typography variant="h5" align="center" gutterBottom>
-                    ${vehicleDetails.rentPerHrs} per hour
+                  ₹{vehicleDetails.rentPerHrs} per hour
                   </Typography>
                   <Divider sx={{ my: 2 }} />
                   <Typography variant="body1" align="center" paragraph>

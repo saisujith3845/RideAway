@@ -3,19 +3,22 @@ import { Table, Button, Container, Alert } from 'react-bootstrap';
 import axiosInstance from '../utilities/axiosInstance';
 import UserLayout from '../utilities/UserLayout';
 import { Link } from 'react-router-dom';
+import Loadingpage from '../utilities/Loadingpage';
 
 const ReviewsTable = () => {
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchReviews();
-  }, []);
+  }, [reviews]);
 
   const fetchReviews = async () => {
     try {
       const response = await axiosInstance.get('/reviews');
       setReviews(response.data);
+      setLoading(false)
       setError(null); // Clear any previous errors
     } catch (error) {
       if (error.response && error.response.status === 403) {
@@ -60,10 +63,17 @@ const ReviewsTable = () => {
     return <ErrorPage message={error} />;
   }
 
+  if (loading) {
+    return (
+      <Loadingpage />
+    );
+  }
+
+
   return (
     <UserLayout>
       <Container>
-        <h1 className="mt-4 mb-4 display-5 text-center">Reviews</h1>
+        <h1 className="mt-4 mb-4 display-5 fw-bolder text-center">Reviews</h1>
         {reviews.length === 0 ? (
           <Alert variant="info" className="mt-5 text-center">
             <h4>No Reviews in Sight, Admin!</h4>
