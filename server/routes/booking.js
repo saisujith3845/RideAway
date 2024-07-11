@@ -28,9 +28,9 @@ router.post('/', authenticateJWT, async (req, res) => {
           { start_date: { $lt: end_date }, end_date: { $gt: start_date } }
         ],
       });
-  
+      
       if (overlappingBookings.length > 0) {
-        return res.status(400).send({ error: 'Not available in that slot', overlappingBookings: overlappingBookings });
+        return res.status(200).send({ error: 'Not available in that slot', overlappingBookings: true });
       }
   
       const booking = new Booking({

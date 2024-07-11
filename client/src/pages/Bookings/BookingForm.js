@@ -65,13 +65,13 @@ function BookingForm({ vehicleId, onBookingConfirmed }) {
 
   const handleSubmit = async () => {
     const { pickupLocation, dropoffLocation, startDate, endDate } = formData;
-
+  
     // Check if all required fields are filled
     if (!pickupLocation || !dropoffLocation || !startDate || !endDate) {
       setAlert({ open: true, message: 'All fields are required', severity: 'error' });
       return;
     }
-
+  
     const data = {
       vehicle_id: vehicleId,
       start_date: startDate,
@@ -79,37 +79,29 @@ function BookingForm({ vehicleId, onBookingConfirmed }) {
       pickupLocation,
       dropoffLocation,
     };
-
+  
     try {
-      const existingBookings = await axiosInstance.get(`/bookings?vehicle_id=${vehicleId}`);
-      const isOverlap = existingBookings.data.some(
-        (booking) =>
-          new Date(booking.start_date) <= endDate && new Date(booking.end_date) >= startDate
-      );
-        
-      if (isOverlap) {
-        setAlert({ open: true, message: 'Not available in that slot', severity: 'error' });
-        return;
-      }
-
       const response = await axiosInstance.post('/bookings', data);
-      console.log('Booking Successful:', response.data);
-
-      onBookingConfirmed();
-
-      setAlert({
-        open: true,
-        message: 'Your booking request has been sent to the admin. Please wait for approval. Thank you!',
-        severity: 'success',
-      });
-
-      handleClose();
-      navigate('/bookings');
+      console.log(response.data);
+      if (response.data.overlappingBookings) {
+        setAlert({ open: true, message: 'Not available in that slot', severity: 'error' });
+      } else {
+        onBookingConfirmed();
+        setAlert({
+          open: true,
+          message: 'Your booking request has been sent to the admin. Please wait for approval. Thank you!',
+          severity: 'success',
+        });
+  
+        handleClose();
+        navigate('/bookings');
+      }
     } catch (error) {
       console.error('Error creating booking:', error.response.data);
       setAlert({ open: true, message: 'Error Occurred. Please try again!', severity: 'error' });
     }
   };
+  
 
   const handleAlertClose = () => {
     setAlert({ ...alert, open: false });
