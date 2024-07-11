@@ -17,7 +17,7 @@ const BookingsTable = () => {
     try {
       const response = await axiosInstance.get('/admin/bookings');
       setBookings(response.data);
-      setLoading(false)
+      setLoading(false);
       setError(null); 
     } catch (error) {
       if (error.response && error.response.status === 403) {
@@ -29,31 +29,31 @@ const BookingsTable = () => {
     }
   };
 
- const deleteBooking = async (bookingId) => {
-  const confirmDelete = window.confirm('Are you sure you want to delete this booking?');
-  if (confirmDelete) {
-    try {
-      const deletedBooking = bookings.find(booking => booking._id === bookingId);
-      await axiosInstance.delete(`/admin/bookings/${bookingId}`);
-      setBookings(bookings.filter(booking => booking._id !== bookingId));
-      setError(null); // Clear any previous errors    
+  const deleteBooking = async (bookingId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this booking?');
+    if (confirmDelete) {
+      try {
+        const deletedBooking = bookings.find(booking => booking._id === bookingId);
+        await axiosInstance.delete(`/admin/bookings/${bookingId}`);
+        setBookings(bookings.filter(booking => booking._id !== bookingId));
+        setError(null); // Clear any previous errors    
 
-      // Format dates
-      const startDate = new Date(deletedBooking.start_date).toLocaleDateString();
-      const endDate = new Date(deletedBooking.end_date).toLocaleDateString();
+        // Format dates
+        const startDate = new Date(deletedBooking.start_date);
+        const endDate = new Date(deletedBooking.end_date);
 
-      // Notify user
-      const message = `Your booking for ${deletedBooking.vehicle_id.make} ${deletedBooking.vehicle_id.model} (${deletedBooking.vehicle_id.year}) from ${startDate} to ${endDate} has been cancelled or declined by admin due to technical reasons.`;
-      
-      // Assuming you have a function to post notifications
-      await postNotification(deletedBooking, message);
+        // Notify user
+        const message = `Your booking for ${deletedBooking.vehicle_id.make} ${deletedBooking.vehicle_id.model} (${deletedBooking.vehicle_id.year}) from ${startDate.toLocaleString()} to ${endDate.toLocaleString()} has been cancelled or declined by admin due to technical reasons.`;
+        
+        // Assuming you have a function to post notifications
+        await postNotification(deletedBooking, message);
 
-    } catch (error) {
-      setError('Error deleting booking.');
-      console.error('Error deleting booking:', error);
+      } catch (error) {
+        setError('Error deleting booking.');
+        console.error('Error deleting booking:', error);
+      }
     }
-  }
-};
+  };
 
 
   const postNotification = async (booking, message) => {
@@ -76,8 +76,8 @@ const BookingsTable = () => {
       const updatedBooking = res.data.booking;
       
       // Format dates
-      const startDate = new Date(updatedBooking.start_date).toLocaleDateString();
-      const endDate = new Date(updatedBooking.end_date).toLocaleDateString();
+      const startDate = new Date(updatedBooking.start_date);
+      const endDate = new Date(updatedBooking.end_date);
   
       // Update state
       setBookings(bookings.map(booking => 
@@ -87,7 +87,7 @@ const BookingsTable = () => {
       alert(res.data.message);
   
       // Post notification
-      const message = `Your booking for ${updatedBooking.vehicle_id.make} ${updatedBooking.vehicle_id.model} (${updatedBooking.vehicle_id.year}) from ${startDate} to ${endDate} has been confirmed by the admin. Thanks for choosing us.`;
+      const message = `Your booking for ${updatedBooking.vehicle_id.make} ${updatedBooking.vehicle_id.model} (${updatedBooking.vehicle_id.year}) from ${startDate.toLocaleString()} to ${endDate.toLocaleString()} has been confirmed by the admin. Thanks for choosing us.`;
       await postNotification(updatedBooking, message);
   
     } catch (error) {
@@ -114,11 +114,8 @@ const BookingsTable = () => {
   }
 
   if (loading) {
-    return (
-      <Loadingpage/>
-    );
+    return <Loadingpage />;
   }
-
 
   return (
     <UserLayout>
@@ -130,13 +127,16 @@ const BookingsTable = () => {
             <p>Our booking calendar is currently empty. Let's prepare for the next wave of reservations together!</p>
           </Alert>
         ) : (
-          <Table responsive  bordered hover>
+          <Table responsive bordered hover>
             <thead>
               <tr>
                 <th>#</th>
-                <th>Booking ID</th>
                 <th>User Email</th>
                 <th>Vehicle Details</th>
+                <th>Pickup Location</th>
+                <th>Dropoff Location</th>
+                <th>Start Date / Time</th>
+                <th>End Date / Time</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -145,17 +145,29 @@ const BookingsTable = () => {
               {bookings.map((booking, index) => (
                 <tr key={booking._id}>
                   <td>{index + 1}</td>
-                  <td>{booking._id}</td>
                   <td>{booking.user_id.email}</td>
                   <td>
-                    {`${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year}), ${booking.vehicle_id.fuelType}`}
+                    <div>{`${booking.vehicle_id.make} ${booking.vehicle_id.model}`}</div>
+                    <div>{`(${booking.vehicle_id.year}), ${booking.vehicle_id.fuelType}`}</div>
+                  </td>
+                  <td>{booking.pickupLocation}</td>
+                  <td>{booking.dropoffLocation}</td>
+                  <td>
+                    <div>{new Date(booking.start_date).toLocaleDateString()}</div>
+                    <div>{new Date(booking.start_date).toLocaleTimeString()}</div>
+                  </td>
+                  <td>
+                    <div>{new Date(booking.end_date).toLocaleDateString()}</div>
+                    <div>{new Date(booking.end_date).toLocaleTimeString()}</div>
                   </td>
                   <td>{booking.status}</td>
                   <td>
-                    {booking.status !== 'confirmed' &&( <><Button variant="success" className='mx-2' onClick={() => confirmBooking(booking._id)}>Confirm</Button>
-                    <Button variant="danger" onClick={() => deleteBooking(booking._id)}>
-                      Delete
-                    </Button></>)}
+                    {booking.status !== 'confirmed' && (
+                      <>
+                        <Button variant="success" className='mx-2' onClick={() => confirmBooking(booking._id)}>Confirm</Button>
+                        <Button variant="danger" onClick={() => deleteBooking(booking._id)}>Delete</Button>
+                      </>
+                    )}
                   </td>
                 </tr>
               ))}
