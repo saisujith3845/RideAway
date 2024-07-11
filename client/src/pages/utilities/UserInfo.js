@@ -6,15 +6,23 @@ import UserLayout from './UserLayout';
 
 const UserInfo = () => {
     const { user_id } = useParams();
-    const [Userdata, setUserdata] = useState({name:"" });
+    const [userData, setUserData] = useState({
+        name: "",
+        email: "",
+        address: "",
+        phone: ""
+    });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const getDetails = async () => {
             try {
                 const response = await axiosInstance.get(`/users/${user_id}`);
-                setUserdata(response.data);
+                setUserData(response.data);
+                setLoading(false);
             } catch (error) {
                 console.error("Error fetching user details", error);
+                setLoading(false);
             }
         };
 
@@ -23,7 +31,7 @@ const UserInfo = () => {
 
     const handleChange = (e) => {
         const { id, value } = e.target;
-        setUserdata(prevState => ({
+        setUserData(prevState => ({
             ...prevState,
             [id]: value
         }));
@@ -32,58 +40,64 @@ const UserInfo = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axiosInstance.put(`/users/${user_id}`, Userdata);
+            await axiosInstance.put(`/users/${user_id}`, userData);
             alert("Changes Saved");
         } catch (error) {
             console.error("Error updating user details", error);
         }
     };
 
-    return (<>
-       <UserLayout>
-        <Container className='mt-3 w-50'>
-            <h1 className='text-center'>Account Details</h1>
-            <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="name">
-                    <Form.Label>UserName</Form.Label>
-                    <Form.Control
-                        type="text"
-                        value={Userdata?Userdata.name:""}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        value={Userdata?Userdata.email:""}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="address">
-                    <Form.Label>Address</Form.Label>
-                    <Form.Control
-                        type="text"
-                        value={Userdata?Userdata.address:""}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="phone">
-                    <Form.Label>Phone Number</Form.Label>
-                    <Form.Control
-                        type="number"
-                        value={Userdata?Userdata.phone:""}
-                        onChange={handleChange}
-                    />
-                </Form.Group>
-                <Button variant="warning" type="submit">
-                    Save Changes
-                </Button>
-            </Form>
-        </Container>
+    if (loading) {
+        return <UserLayout><Container className='mt-3 w-50'><h1>Loading...</h1></Container></UserLayout>;
+    }
+
+    return (
+        <UserLayout>
+            <Container className='mt-3 w-50'>
+                <h1 className='text-center mb-4 fw-bold'>Account Details</h1>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="name">
+                        <Form.Label><strong>User Name</strong></Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={userData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="email">
+                        <Form.Label><strong>Email address</strong></Form.Label>
+                        <Form.Control
+                            type="email"
+                            value={userData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="address">
+                        <Form.Label><strong>Address</strong></Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={userData.address}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="phone">
+                        <Form.Label><strong>Phone Number</strong></Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={userData.phone}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                    <div className="d-grid">
+                        <Button variant="warning" type="submit">
+                            Save Changes
+                        </Button>
+                    </div>
+                </Form>
+            </Container>
         </UserLayout>
-       
-        </>
     );
 };
 

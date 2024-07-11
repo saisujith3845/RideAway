@@ -11,7 +11,6 @@ import {
     Select,
     MenuItem,
     Grid,
-    CircularProgress,
     Slider,
     FormControl,
     InputLabel,
@@ -23,6 +22,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import BookingForm from '../Bookings/BookingForm';
 import UnAuthorizedPage from '../utilities/UnAuthorizedPage';
 import UserLayout from '../utilities/UserLayout';
+import LoadingPage from '../utilities/Loadingpage'; // Update path as necessary
 
 function VehicleCard({ details }) {
     const imageUrl = details.img ? `data:${details.img.contentType};base64,${details.img.data}` : "logofinal.png";
@@ -216,7 +216,7 @@ const Vehicles = () => {
                                                 },
                                             },
                                             '& .MuiSlider-valueLabel': {
-                                                backgroundColor: 'yellow',
+                                                backgroundColor: '#FFC107',
                                                 color: 'black',
                                             },
                                         }}
@@ -224,7 +224,9 @@ const Vehicles = () => {
                                 </Grid>
                             </Grid>
                         </Collapse>
-                        {sortedVehicles.length > 0 ? (
+                        {loading ? (
+                            <LoadingPage />
+                        ) : sortedVehicles.length > 0 ? (
                             <Grid container spacing={3}>
                                 {sortedVehicles.map((vehicle) => (
                                     <Grid item key={vehicle._id} xs={12} sm={6} md={4} lg={3}>
@@ -232,16 +234,12 @@ const Vehicles = () => {
                                     </Grid>
                                 ))}
                             </Grid>
-                        ) : (loading ? (
-                            <Box className='text-center my-5'>
-                                <CircularProgress />
-                            </Box>
                         ) : (
                             <Box className='text-center fs-4 my-5'>
                                 🚗 No Vehicles Today! 🚗
                                 <br />
                                 It looks like our vehicles are all out on adventures. Check back soon for some exciting new rides!
-                            </Box>)
+                            </Box>
                         )}
                     </Box>
                 </UserLayout>

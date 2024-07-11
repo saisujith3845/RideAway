@@ -1,59 +1,118 @@
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
+import React, { useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 import axiosInstance from '../utilities/axiosInstance';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import { TextField } from '@mui/material';
 
 function BookingForm({ vehicleId, onBookingConfirmed }) {
-  const navigate = useNavigate(); // Access the navigate function
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [formData, setFormData] = useState({
-    pickupLocation: "",
-    dropoffLocation: "",
-    startDate: "",
-    endDate: ""
+    pickupLocation: '',
+    dropoffLocation: '',
+    startDate: new Date(),
+    endDate: new Date(Date.now() + 30 * 60 * 1000),
   });
+  const [alert, setAlert] = useState({ open: false, message: '', severity: 'error' });
+  const [vehicle, setVehicle] = useState(null);
+
+  useEffect(() => {
+    const fetchVehicle = async () => {
+      try {
+        const response = await axiosInstance.get(`/vehicles/${vehicleId}`);
+        setVehicle(response.data);
+      } catch (error) {
+        console.error('Error fetching vehicle:', error);
+      }
+    };
+
+    fetchVehicle();
+  }, [vehicleId]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleDateChange = (field, date) => {
+    if (field === 'startDate') {
+      setFormData({
+        ...formData,
+        startDate: date,
+        endDate: date > formData.endDate ? new Date(date.getTime() + 30 * 60 * 1000) : formData.endDate,
+      });
+    } else {
+      setFormData({ ...formData, endDate: date });
+    }
+  };
+
+  const calculateTotalCost = () => {
+    if (!vehicle) return 0;
+    const { rentPerHrs } = vehicle;
+    const { startDate, endDate } = formData;
+    const hours = Math.ceil((endDate - startDate) / (1000 * 60 * 60));
+    return rentPerHrs * hours;
   };
 
   const handleSubmit = async () => {
+    const { pickupLocation, dropoffLocation, startDate, endDate } = formData;
+
+    // Check if all required fields are filled
+    if (!pickupLocation || !dropoffLocation || !startDate || !endDate) {
+      setAlert({ open: true, message: 'All fields are required', severity: 'error' });
+      return;
+    }
+
     const data = {
       vehicle_id: vehicleId,
-      start_date: formData.startDate,
-      end_date: formData.endDate,
-      pickupLocation: formData.pickupLocation,
-      dropoffLocation: formData.dropoffLocation,
+      start_date: startDate,
+      end_date: endDate,
+      pickupLocation,
+      dropoffLocation,
     };
 
     try {
+      const existingBookings = await axiosInstance.get(`/bookings?vehicle_id=${vehicleId}`);
+      const isOverlap = existingBookings.data.some(
+        (booking) =>
+          new Date(booking.start_date) <= endDate && new Date(booking.end_date) >= startDate
+      );
+        
+      if (isOverlap) {
+        setAlert({ open: true, message: 'Not available in that slot', severity: 'error' });
+        return;
+      }
+
       const response = await axiosInstance.post('/bookings', data);
       console.log('Booking Successful:', response.data);
-      
-      // Update vehicle availability to false
-      await axiosInstance.put(`/vehicles/${vehicleId}`, { availability: false });
 
-      // Notify parent component of booking confirmation
-      onBookingConfirmed(); 
+      onBookingConfirmed();
 
-      // Redirect to /bookings page using navigate function
-      alert("Your booking request has been sent to the admin. Please wait for approval. Thank you!");
+      setAlert({
+        open: true,
+        message: 'Your booking request has been sent to the admin. Please wait for approval. Thank you!',
+        severity: 'success',
+      });
+
+      handleClose();
       navigate('/bookings');
-
-      handleClose(); // Close modal or perform any other necessary cleanup
     } catch (error) {
       console.error('Error creating booking:', error.response.data);
-      alert("Error Occured ..try Again!!");
+      setAlert({ open: true, message: 'Error Occurred. Please try again!', severity: 'error' });
     }
+  };
+
+  const handleAlertClose = () => {
+    setAlert({ ...alert, open: false });
   };
 
   return (
@@ -92,23 +151,33 @@ function BookingForm({ vehicleId, onBookingConfirmed }) {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="startDate">
-              <Form.Label>Start Date</Form.Label>
-              <Form.Control
-                type="date"
-                name="startDate"
-                value={formData.startDate}
-                onChange={handleChange}
-                required
+              <Form.Label>Start Date & Time</Form.Label>
+              <DatePicker
+                selected={formData.startDate}
+                onChange={(date) => handleDateChange('startDate', date)}
+                showTimeSelect
+                dateFormat="Pp"
+                minDate={new Date()}
+                customInput={<TextField required />}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="endDate">
-              <Form.Label>End Date</Form.Label>
+              <Form.Label>End Date & Time</Form.Label>
+              <DatePicker
+                selected={formData.endDate}
+                onChange={(date) => handleDateChange('endDate', date)}
+                showTimeSelect
+                dateFormat="Pp"
+                minDate={formData.startDate}
+                customInput={<TextField required />}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="totalCost">
+              <Form.Label>Total Cost</Form.Label>
               <Form.Control
-                type="date"
-                name="endDate"
-                value={formData.endDate}
-                onChange={handleChange}
-                required
+                type="text"
+                value={`$${calculateTotalCost()}`}
+                readOnly
               />
             </Form.Group>
           </Form>
@@ -122,6 +191,12 @@ function BookingForm({ vehicleId, onBookingConfirmed }) {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleAlertClose}>
+        <Alert onClose={handleAlertClose} severity={alert.severity}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Vehicle = require('../models/Vehicle');
 const Booking = require('../models/Booking');
 const Review = require('../models/Review');
+const Notification=require('../models/Notification');
 const { authenticateJWT, isAdmin } = require('../middleware/authenticateJWT');
 
 const router = express.Router();
@@ -20,12 +21,21 @@ router.get('/users', async (req, res) => {
 
 router.delete('/users/:user_id', async (req, res) => {
     try {
-        await User.findByIdAndDelete(req.params.user_id);
-        res.status(200).send({ message: 'User deleted successfully' });
+        const userId = req.params.user_id;
+
+        await User.findByIdAndDelete(userId);
+
+        await Booking.deleteMany({ user_id: userId });
+
+        await Notification.deleteMany({ user_id: userId });
+
+        await Review.deleteMany({ user_id: userId });
+
+        res.status(200).send({ message: 'User, bookings, notifications, and reviews deleted successfully' });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
-});
+}); 
 
 router.get('/vehicles', async (req, res) => {
     try {
@@ -36,21 +46,7 @@ router.get('/vehicles', async (req, res) => {
     }
 });
 
-router.delete('/bookings/:booking_id', async (req, res) => {
-    try {
-        const deletedBooking = await Booking.findByIdAndDelete(req.params.booking_id);
 
-        if (!deletedBooking) {
-            return res.status(404).send({ error: 'Booking not found' });
-        }
-
-        await Vehicle.findByIdAndUpdate(deletedBooking.vehicle_id, { availability: true });
-
-        res.status(200).send({ message: 'Booking deleted successfully' });
-    } catch (error) {
-        res.status(500).send({ error: error.message });
-    }
-});
 
 router.get('/bookings', async (req, res) => {
     try {

@@ -29,24 +29,32 @@ const BookingsTable = () => {
     }
   };
 
-  const deleteBooking = async (bookingId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this booking?');
-    if (confirmDelete) {
-      try {
-        const deletedBooking = bookings.find(booking => booking._id === bookingId);
-        await axiosInstance.delete(`/admin/bookings/${bookingId}`);
-        setBookings(bookings.filter(booking => booking._id !== bookingId));
-        setError(null); // Clear any previous errors    
+ const deleteBooking = async (bookingId) => {
+  const confirmDelete = window.confirm('Are you sure you want to delete this booking?');
+  if (confirmDelete) {
+    try {
+      const deletedBooking = bookings.find(booking => booking._id === bookingId);
+      await axiosInstance.delete(`/admin/bookings/${bookingId}`);
+      setBookings(bookings.filter(booking => booking._id !== bookingId));
+      setError(null); // Clear any previous errors    
 
-        // Notify user
-        await postNotification(deletedBooking, `Your booking for ${deletedBooking.vehicle_id.make} ${deletedBooking.vehicle_id.model} (${deletedBooking.vehicle_id.year}) has been cancelled or declined by admin due to technical reasons.`);
+      // Format dates
+      const startDate = new Date(deletedBooking.start_date).toLocaleDateString();
+      const endDate = new Date(deletedBooking.end_date).toLocaleDateString();
 
-      } catch (error) {
-        setError('Error deleting booking.');
-        console.error('Error deleting booking:', error);
-      }
+      // Notify user
+      const message = `Your booking for ${deletedBooking.vehicle_id.make} ${deletedBooking.vehicle_id.model} (${deletedBooking.vehicle_id.year}) from ${startDate} to ${endDate} has been cancelled or declined by admin due to technical reasons.`;
+      
+      // Assuming you have a function to post notifications
+      await postNotification(deletedBooking, message);
+
+    } catch (error) {
+      setError('Error deleting booking.');
+      console.error('Error deleting booking:', error);
     }
-  };
+  }
+};
+
 
   const postNotification = async (booking, message) => {
     const notification = {
@@ -67,21 +75,28 @@ const BookingsTable = () => {
       const res = await axiosInstance.post(`/admin/bookings/${bookingId}/confirm`);
       const updatedBooking = res.data.booking;
       
+      // Format dates
+      const startDate = new Date(updatedBooking.start_date).toLocaleDateString();
+      const endDate = new Date(updatedBooking.end_date).toLocaleDateString();
+  
+      // Update state
       setBookings(bookings.map(booking => 
         booking._id === bookingId ? { ...booking, status: 'confirmed' } : booking
       ));
       setError(null); 
       alert(res.data.message);
-
+  
       // Post notification
-      await postNotification(updatedBooking, `Your booking for ${updatedBooking.vehicle_id.make} ${updatedBooking.vehicle_id.model} (${updatedBooking.vehicle_id.year}) has been confirmed by the admin. Thanks for choosing us.`);
-
+      const message = `Your booking for ${updatedBooking.vehicle_id.make} ${updatedBooking.vehicle_id.model} (${updatedBooking.vehicle_id.year}) from ${startDate} to ${endDate} has been confirmed by the admin. Thanks for choosing us.`;
+      await postNotification(updatedBooking, message);
+  
     } catch (error) {
       setError('Error confirming booking.');
       alert('Error confirming booking.');
       console.error('Error confirming booking:', error);
     }
   };
+  
 
   const ErrorPage = ({ message }) => {
     return (

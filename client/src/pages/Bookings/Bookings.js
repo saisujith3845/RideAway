@@ -1,41 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
-import "bootstrap/dist/css/bootstrap.min.css";
+import Button from 'react-bootstrap/Button';
 import axiosInstance from '../utilities/axiosInstance';
-
+import { useNavigate } from 'react-router-dom';
 import UnAuthorizedPage from '../utilities/UnAuthorizedPage';
-import Button from 'react-bootstrap/Button'; // Make sure to import Button from react-bootstrap
-import ReviewModal from './ReviewModal'; // Import the ReviewModal component
 import UserLayout from '../utilities/UserLayout';
 import Loadingpage from '../utilities/Loadingpage';
+import ReviewModal from './ReviewModal';
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [currentVehicleId, setCurrentVehicleId] = useState(null);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook for navigation
   const udata = localStorage.getItem('userData');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axiosInstance.get('/bookings'); 
+        const response = await axiosInstance.get('/bookings');
         setBookings(response.data);
         setLoading(false);
       } catch (error) {
         setError(error.message);
-        setLoading(false)
+        setLoading(false);
       }
     };
 
     fetchBookings();
-  }, [bookings]);
+  }, []);
 
   const handleRowClick = (bookingId) => {
-    navigate(`/bookings/${bookingId}`);
+    // Prevent navigation when clicking on the review button
+    const clickedElement = document.activeElement.tagName.toLowerCase();
+    if (clickedElement !== 'button') {
+      navigate(`/bookings/${bookingId}`);
+    }
   };
 
   const review = (vehicleId) => {
@@ -43,19 +45,14 @@ function Bookings() {
     setModalShow(true);
   };
 
-
   if (loading) {
-    return (
-      <Loadingpage />
-    );
+    return <Loadingpage />;
   }
-
 
   return (
     <>
       {udata ? (
-        <>
-          <UserLayout>
+        <UserLayout>
           {error && <div>Error: {error}</div>}
           <h1 className="text-center mb-3 fw-bolder display-5">Bookings</h1>
           {bookings.length > 0 ? (
@@ -75,20 +72,22 @@ function Bookings() {
               </thead>
               <tbody>
                 {bookings.map((booking, index) => (
-                  <tr key={booking._id} >
+                  <tr key={booking._id} onClick={() => handleRowClick(booking._id)} style={{ cursor: 'pointer' }}>
                     <td>{index + 1}</td>
-                    <td onClick={() => handleRowClick(booking._id)}>{`${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year})`}</td>
-                    <td>{new Date(booking.start_date).toLocaleDateString()}</td>
-                    <td>{new Date(booking.end_date).toLocaleDateString()}</td>
+                    <td>{`${booking.vehicle_id.make} ${booking.vehicle_id.model} (${booking.vehicle_id.year})`}</td>
+                    <td>{new Date(booking.start_date).toLocaleString()}</td>
+                    <td>{new Date(booking.end_date).toLocaleString()}</td>
                     <td>{booking.pickupLocation}</td>
                     <td>{booking.dropoffLocation}</td>
                     <td>₹{booking.totalCost}</td>
                     <td>{booking.status}</td>
-                    {booking.status === 'confirmed' && (
-                      <td>
-                        <Button variant='warning' onClick={() => review(booking.vehicle_id._id)}>Review</Button>
-                      </td>
-                    )}
+                    <td>
+                      {booking.status === 'confirmed' && (
+                        <Button variant="warning" onClick={() => review(booking.vehicle_id._id)}>
+                          Review
+                        </Button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -99,13 +98,8 @@ function Bookings() {
               <div>Our booking slots are eagerly anticipating your next adventure. Start your experience with us today!</div>
             </div>
           )}
-          <ReviewModal
-            show={modalShow}
-            handleClose={() => setModalShow(false)}
-            vehicleId={currentVehicleId}
-          />
-          </UserLayout>
-        </>
+          <ReviewModal show={modalShow} handleClose={() => setModalShow(false)} vehicleId={currentVehicleId} />
+        </UserLayout>
       ) : (
         <UnAuthorizedPage />
       )}
