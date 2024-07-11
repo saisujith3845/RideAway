@@ -83,7 +83,7 @@ const UsersTable = () => {
             <p>Our user pool is a bit quiet right now. Let's gear up to welcome more members soon!</p>
           </Alert>
         ) : (
-          <Table responsive striped bordered hover>
+          <Table responsive  bordered hover>
             <thead>
               <tr>
                 <th>ID</th>

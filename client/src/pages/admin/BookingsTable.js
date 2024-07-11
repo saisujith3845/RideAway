@@ -130,7 +130,7 @@ const BookingsTable = () => {
             <p>Our booking calendar is currently empty. Let's prepare for the next wave of reservations together!</p>
           </Alert>
         ) : (
-          <Table responsive striped bordered hover>
+          <Table responsive  bordered hover>
             <thead>
               <tr>
                 <th>#</th>

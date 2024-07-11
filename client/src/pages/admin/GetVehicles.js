@@ -156,7 +156,7 @@ const GetVehicles = () => {
             Attention, Admin! Our vehicle fleet is currently awaiting your touch. Add new vehicles to enhance our selection and elevate the experience for our users. Let's make every journey unforgettable!
           </div>
         ) : (
-          <Table striped bordered hover>
+          <Table  responsive bordered hover>
             <thead>
               <tr>
                 <th>ID</th>

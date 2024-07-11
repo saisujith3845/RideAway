@@ -80,7 +80,7 @@ const ReviewsTable = () => {
             <p>Our review page is currently blank. Let's get ready for the next wave of insights soon!</p>
           </Alert>
         ) : (
-          <Table responsive striped bordered hover>
+          <Table responsive  bordered hover>
             <thead>
               <tr>
                 <th>ID</th>
